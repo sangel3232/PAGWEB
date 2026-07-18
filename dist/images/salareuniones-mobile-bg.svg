@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="Sala de reuniones para móvil">
+  <defs>
+    <linearGradient id="meetingSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f2d5a0"/>
+      <stop offset="50%" stop-color="#b06b34"/>
+      <stop offset="100%" stop-color="#21140c"/>
+    </linearGradient>
+    <linearGradient id="meetingRoom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#654127"/>
+      <stop offset="100%" stop-color="#1d1209"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#meetingSky)"/>
+  <rect y="1200" width="1080" height="720" fill="#16100a"/>
+  <rect x="150" y="720" width="780" height="500" rx="24" fill="url(#meetingRoom)" opacity="0.95"/>
+  <rect x="215" y="640" width="650" height="140" rx="18" fill="#80502f" opacity="0.92"/>
+  <rect x="270" y="560" width="540" height="120" rx="16" fill="#a96c3d" opacity="0.9"/>
+  <rect x="320" y="500" width="440" height="110" rx="14" fill="#c9884c" opacity="0.86"/>
+  <rect x="240" y="840" width="160" height="220" rx="12" fill="#120b07" opacity="0.9"/>
+  <rect x="420" y="840" width="160" height="220" rx="12" fill="#190e09" opacity="0.9"/>
+  <rect x="600" y="840" width="160" height="220" rx="12" fill="#171008" opacity="0.9"/>
+  <rect x="780" y="840" width="160" height="220" rx="12" fill="#181008" opacity="0.9"/>
+  <path d="M0 1360 C240 1290 420 1248 540 1295 C660 1342 840 1395 1080 1335 L1080 1920 L0 1920 Z" fill="#331a0c" opacity="0.55"/>
+</svg>

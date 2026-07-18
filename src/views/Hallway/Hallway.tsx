@@ -256,13 +256,16 @@ export function Hallway() {
           opacity: { duration: 0 },
         }}
       >
-        <img
-          src="/images/pasillo-bg.jpg"
-          alt="Pasillo principal de Zapata Composiciones"
-          className={styles.bgImg}
-          draggable={false}
-          fetchPriority="high"
-        />
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/pasillo-mobile-bg.svg" />
+          <img
+            src="/images/pasillo-bg.jpg"
+            alt="Pasillo principal de Zapata Composiciones"
+            className={styles.bgImg}
+            draggable={false}
+            fetchPriority="high"
+          />
+        </picture>
         <div className={styles.bgVignette} />
       </motion.div>
 

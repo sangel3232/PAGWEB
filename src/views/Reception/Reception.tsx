@@ -29,12 +29,15 @@ export function Reception() {
         }
         transition={{ duration: 1.0, ease: [0.4, 0, 0.2, 1] }}
       >
-        <img
-          src="/images/reception-bg.jpg"
-          alt="Recepción de Zapata Composiciones"
-          className={styles.bgImg}
-          draggable={false}
-        />
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/reception-mobile-bg.svg" />
+          <img
+            src="/images/reception-bg.jpg"
+            alt="Recepción de Zapata Composiciones"
+            className={styles.bgImg}
+            draggable={false}
+          />
+        </picture>
         {/* Bottom gradient only — keep top crisp */}
         <div className={styles.bgGradient} />
       </motion.div>

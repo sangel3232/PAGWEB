@@ -13,9 +13,13 @@ export function Exterior() {
   const day = useMemo(() => isDay(), [])
   const [entering, setEntering] = useState(false)
 
-  const bgSrc = day
+  const desktopBgSrc = day
     ? '/images/vistaexteriordia-bg.jpg'
     : '/images/vistaexteriornoche-bg.jpg'
+
+  const mobileBgSrc = day
+    ? '/images/vistaexteriordia-mobile-bg.svg'
+    : '/images/vistaexteriornoche-mobile-bg.svg'
 
   const bgAlt = day
     ? 'Vista exterior diurna de Zapata Composiciones'
@@ -41,7 +45,10 @@ export function Exterior() {
           ? { duration: 0.85, ease: [0.4, 0, 0.2, 1] }
           : { duration: 0 }}
       >
-        <img src={bgSrc} alt={bgAlt} className={styles.bgImg} draggable={false} />
+        <picture>
+          <source media="(max-width: 768px)" srcSet={mobileBgSrc} />
+          <img src={desktopBgSrc} alt={bgAlt} className={styles.bgImg} draggable={false} loading="eager" />
+        </picture>
         {/* Very subtle overlay — keep image crisp */}
         <div className={styles.overlay} />
       </motion.div>

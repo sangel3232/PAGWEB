@@ -21,12 +21,15 @@ export function SecondFloor() {
         animate={entering ? { scale: 1.1, opacity: 0 } : { scale: 1, opacity: 1 }}
         transition={{ duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
       >
-        <img
-          src="/images/escaleras-bg.jpg"
-          alt="Segundo piso de Zapata Composiciones"
-          className={styles.bgImg}
-          draggable={false}
-        />
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/escaleras-mobile-bg.svg" />
+          <img
+            src="/images/escaleras-bg.jpg"
+            alt="Segundo piso de Zapata Composiciones"
+            className={styles.bgImg}
+            draggable={false}
+          />
+        </picture>
         <div className={styles.bgOverlay} />
       </motion.div>
 

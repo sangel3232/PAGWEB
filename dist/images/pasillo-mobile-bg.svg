@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="Pasillo principal para móvil">
+  <defs>
+    <linearGradient id="hallSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0d6a1"/>
+      <stop offset="55%" stop-color="#ae7438"/>
+      <stop offset="100%" stop-color="#2b160f"/>
+    </linearGradient>
+    <linearGradient id="hallFloor" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a1b10"/>
+      <stop offset="100%" stop-color="#090604"/>
+    </linearGradient>
+    <linearGradient id="hallWall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5a3824"/>
+      <stop offset="100%" stop-color="#23150c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#hallSky)"/>
+  <rect y="1220" width="1080" height="700" fill="url(#hallFloor)"/>
+  <rect x="120" y="700" width="840" height="560" rx="24" fill="url(#hallWall)" opacity="0.95"/>
+  <rect x="180" y="780" width="720" height="420" rx="20" fill="#3d2515" opacity="0.92"/>
+  <rect x="220" y="640" width="640" height="140" rx="16" fill="#6d4325" opacity="0.9"/>
+  <rect x="260" y="560" width="560" height="140" rx="16" fill="#8f5730" opacity="0.85"/>
+  <rect x="310" y="480" width="460" height="140" rx="16" fill="#a56b39" opacity="0.85"/>
+  <rect x="214" y="1230" width="132" height="240" rx="10" fill="#18100a" opacity="0.9"/>
+  <rect x="372" y="1230" width="132" height="240" rx="10" fill="#151009" opacity="0.9"/>
+  <rect x="530" y="1230" width="132" height="240" rx="10" fill="#1b120a" opacity="0.9"/>
+  <rect x="688" y="1230" width="132" height="240" rx="10" fill="#17110a" opacity="0.9"/>
+  <rect x="846" y="1230" width="132" height="240" rx="10" fill="#161009" opacity="0.9"/>
+  <path d="M0 1350 C240 1280 420 1240 540 1290 C660 1340 860 1400 1080 1340 L1080 1920 L0 1920 Z" fill="#28150c" opacity="0.55"/>
+  <ellipse cx="840" cy="580" rx="120" ry="70" fill="#ffe9b8" opacity="0.16"/>
+</svg>

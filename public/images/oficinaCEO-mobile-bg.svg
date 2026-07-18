@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="Oficina del CEO para móvil">
+  <defs>
+    <linearGradient id="ceoSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f4d9a0"/>
+      <stop offset="50%" stop-color="#ab6f34"/>
+      <stop offset="100%" stop-color="#2a170d"/>
+    </linearGradient>
+    <linearGradient id="ceoWall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5f3d24"/>
+      <stop offset="100%" stop-color="#21140c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#ceoSky)"/>
+  <rect y="1230" width="1080" height="690" fill="#1a120c"/>
+  <rect x="140" y="720" width="800" height="540" rx="24" fill="url(#ceoWall)" opacity="0.95"/>
+  <rect x="220" y="640" width="640" height="140" rx="18" fill="#7c4f2d" opacity="0.95"/>
+  <rect x="280" y="560" width="520" height="120" rx="16" fill="#a96e3b" opacity="0.9"/>
+  <rect x="332" y="500" width="416" height="110" rx="14" fill="#c78b4b" opacity="0.86"/>
+  <rect x="240" y="820" width="180" height="240" rx="14" fill="#110b08" opacity="0.9"/>
+  <rect x="450" y="820" width="180" height="240" rx="14" fill="#1a100a" opacity="0.9"/>
+  <rect x="660" y="820" width="180" height="240" rx="14" fill="#150d08" opacity="0.9"/>
+  <path d="M0 1360 C220 1290 400 1250 540 1300 C680 1350 860 1405 1080 1340 L1080 1920 L0 1920 Z" fill="#32180d" opacity="0.55"/>
+</svg>

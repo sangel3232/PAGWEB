@@ -38,7 +38,10 @@ export function MeetingRoom() {
         animate={{ x: -offset.x, y: -offset.y }}
         transition={{ x: { duration: 0.65, ease: 'easeOut' }, y: { duration: 0.65, ease: 'easeOut' } }}
       >
-        <img src="/images/salareuniones-bg.jpg" alt="Sala de reuniones" className={styles.bgImg} draggable={false} />
+        <picture>
+          <source media="(max-width: 768px)" srcSet="/images/salareuniones-mobile-bg.svg" />
+          <img src="/images/salareuniones-bg.jpg" alt="Sala de reuniones" className={styles.bgImg} draggable={false} />
+        </picture>
         <div className={styles.bgVignette} />
       </motion.div>
 

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="Segundo piso para móvil">
+  <defs>
+    <linearGradient id="stairsSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f2d6a1"/>
+      <stop offset="50%" stop-color="#a56933"/>
+      <stop offset="100%" stop-color="#21140c"/>
+    </linearGradient>
+    <linearGradient id="stairsFloor" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2c1a10"/>
+      <stop offset="100%" stop-color="#090604"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#stairsSky)"/>
+  <rect y="1220" width="1080" height="700" fill="url(#stairsFloor)"/>
+  <rect x="160" y="760" width="760" height="480" rx="24" fill="#52331d" opacity="0.95"/>
+  <rect x="220" y="680" width="640" height="140" rx="18" fill="#7b4b2a" opacity="0.92"/>
+  <rect x="284" y="580" width="512" height="120" rx="16" fill="#a56d3b" opacity="0.9"/>
+  <rect x="336" y="500" width="408" height="110" rx="14" fill="#c9874b" opacity="0.86"/>
+  <rect x="240" y="860" width="160" height="260" rx="12" fill="#130c08" opacity="0.9"/>
+  <rect x="430" y="860" width="160" height="260" rx="12" fill="#150d08" opacity="0.9"/>
+  <rect x="620" y="860" width="160" height="260" rx="12" fill="#140b08" opacity="0.9"/>
+  <path d="M0 1360 C240 1290 420 1248 540 1295 C660 1342 840 1395 1080 1335 L1080 1920 L0 1920 Z" fill="#32180c" opacity="0.53"/>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920" role="img" aria-label="Vista exterior nocturna para móvil">
+  <defs>
+    <linearGradient id="skyNight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#071117"/>
+      <stop offset="60%" stop-color="#1a2430"/>
+      <stop offset="100%" stop-color="#060505"/>
+    </linearGradient>
+    <linearGradient id="groundNight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#21150d"/>
+      <stop offset="100%" stop-color="#090504"/>
+    </linearGradient>
+    <linearGradient id="buildingNight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4d331f"/>
+      <stop offset="100%" stop-color="#140d08"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#skyNight)"/>
+  <circle cx="830" cy="320" r="112" fill="#f6d789" opacity="0.18"/>
+  <circle cx="240" cy="220" r="70" fill="#fff9d3" opacity="0.1"/>
+  <rect y="1200" width="1080" height="720" fill="url(#groundNight)"/>
+  <rect x="180" y="770" width="720" height="540" rx="18" fill="url(#buildingNight)"/>
+  <rect x="260" y="720" width="560" height="120" rx="14" fill="#2f1f11"/>
+  <rect x="310" y="620" width="460" height="140" rx="14" fill="#3e2615"/>
+  <rect x="354" y="550" width="372" height="120" rx="12" fill="#604126"/>
+  <rect x="410" y="450" width="260" height="140" rx="12" fill="#855230"/>
+  <rect x="240" y="844" width="120" height="220" rx="10" fill="#140b08" opacity="0.95"/>
+  <rect x="372" y="844" width="120" height="220" rx="10" fill="#110906" opacity="0.95"/>
+  <rect x="504" y="844" width="120" height="220" rx="10" fill="#18110b" opacity="0.95"/>
+  <rect x="636" y="844" width="120" height="220" rx="10" fill="#140d07" opacity="0.95"/>
+  <rect x="768" y="844" width="120" height="220" rx="10" fill="#13100b" opacity="0.95"/>
+  <rect x="0" y="1540" width="1080" height="380" fill="#050303" opacity="0.7"/>
+  <path d="M0 1320 C220 1270 340 1230 540 1280 C740 1330 860 1360 1080 1310 L1080 1920 L0 1920 Z" fill="#2b160d" opacity="0.55"/>
+</svg>
