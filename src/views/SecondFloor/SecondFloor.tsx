@@ -22,7 +22,7 @@ export function SecondFloor() {
         transition={{ duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/escaleras-mobile-bg.svg" />
+          <source media="(max-width: 768px)" srcSet="/images/escaleras-mobile-bg.jpg" />
           <img
             src="/images/escaleras-bg.jpg"
             alt="Segundo piso de Zapata Composiciones"

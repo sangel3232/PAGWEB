@@ -30,7 +30,7 @@ export function Reception() {
         transition={{ duration: 1.0, ease: [0.4, 0, 0.2, 1] }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/reception-mobile-bg.svg" />
+          <source media="(max-width: 768px)" srcSet="/images/reception-mobile-bg.jpg" />
           <img
             src="/images/reception-bg.jpg"
             alt="Recepción de Zapata Composiciones"

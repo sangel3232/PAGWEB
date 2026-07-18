@@ -279,7 +279,7 @@ export function CopyrightOffice() {
         transition={{ x: { duration: 0.65, ease: 'easeOut' }, y: { duration: 0.65, ease: 'easeOut' } }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/derechos-autor-mobile-bg.svg" />
+          <source media="(max-width: 768px)" srcSet="/images/derechos-autor-mobile-bg.jpg" />
           <img src="/images/derechos-autor-bg.jpg" alt="Oficina de Derechos de Autor" className={styles.bgImg} draggable={false} />
         </picture>
         <div className={styles.bgVignette} />

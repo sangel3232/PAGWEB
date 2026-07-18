@@ -39,7 +39,7 @@ export function MeetingRoom() {
         transition={{ x: { duration: 0.65, ease: 'easeOut' }, y: { duration: 0.65, ease: 'easeOut' } }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/salareuniones-mobile-bg.svg" />
+          <source media="(max-width: 768px)" srcSet="/images/salareuniones-mobile-bg.jpg" />
           <img src="/images/salareuniones-bg.jpg" alt="Sala de reuniones" className={styles.bgImg} draggable={false} />
         </picture>
         <div className={styles.bgVignette} />

@@ -257,7 +257,7 @@ export function Hallway() {
         }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/pasillo-mobile-bg.svg" />
+          <source media="(max-width: 768px)" srcSet="/images/pasillo-mobile-bg.jpg" />
           <img
             src="/images/pasillo-bg.jpg"
             alt="Pasillo principal de Zapata Composiciones"

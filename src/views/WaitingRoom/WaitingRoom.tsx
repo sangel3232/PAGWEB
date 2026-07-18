@@ -104,7 +104,7 @@ export function WaitingRoom() {
         transition={{ x: { duration: 0.65, ease: 'easeOut' }, y: { duration: 0.65, ease: 'easeOut' } }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/salaespera-mobile-bg.svg" />
+          <source media="(max-width: 768px)" srcSet="/images/salaespera-mobile-bg.jpg" />
           <img src="/images/salaespera-bg.jpg" alt="Sala de espera" className={styles.bgImg} draggable={false} />
         </picture>
         <div className={styles.bgVignette} />
