@@ -1,0 +1,186 @@
+.page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #0a0602;
+  overflow: hidden;
+  padding-left: var(--sidebar-width);
+  padding-bottom: calc(var(--footer-height) + var(--spacing-xl));
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  will-change: transform, opacity;
+}
+
+.bgImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.bgOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.4) 0%,
+    rgba(0,0,0,0.3) 40%,
+    rgba(0,0,0,0.8) 100%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.header { text-align: center; }
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-gold);
+  letter-spacing: 0.25em;
+  text-shadow: 0 0 30px rgba(201,168,76,0.5);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: rgba(240,234,214,0.6);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.roomsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  width: 100%;
+  max-width: 800px;
+}
+
+.roomCard {
+  position: relative;
+  height: 280px;
+  border: none;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.25);
+  transition: box-shadow var(--transition-duration-fast) var(--transition-easing);
+}
+
+.roomCard:hover {
+  box-shadow: 0 0 0 2px var(--color-accent-gold), var(--glow-gold-subtle);
+}
+
+.roomCard:focus-visible {
+  outline: 2px solid var(--color-accent-gold);
+  outline-offset: 3px;
+}
+
+.roomImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.roomCard:hover .roomImg {
+  transform: scale(1.06);
+}
+
+.roomOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.1) 0%,
+    rgba(0,0,0,0.75) 100%
+  );
+}
+
+.roomLabel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.roomTitle {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.roomHint {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  color: var(--color-accent-gold);
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transition: opacity var(--transition-duration-fast) var(--transition-easing);
+}
+
+.roomCard:hover .roomHint {
+  opacity: 1;
+}
+
+.actions { display: flex; justify-content: center; }
+
+.backBtn {
+  background: transparent;
+  border: 1px solid rgba(240,234,214,0.3);
+  color: rgba(240,234,214,0.65);
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.15em;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all var(--transition-duration-fast) var(--transition-easing);
+}
+
+.backBtn:hover {
+  border-color: var(--color-accent-gold);
+  color: var(--color-accent-gold);
+}
+
+@media (max-width: 768px) {
+  .page { padding-left: var(--sidebar-width-collapsed); }
+  .roomsGrid { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+  .roomCard { height: 220px; }
+}
+
+@media (max-width: 480px) {
+  .page { padding-left: var(--sidebar-width-collapsed); }
+  .content { padding: var(--spacing-xl) var(--spacing-md); }
+  .roomCard { height: 180px; }
+}

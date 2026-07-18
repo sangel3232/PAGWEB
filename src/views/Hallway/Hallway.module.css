@@ -1,0 +1,553 @@
+/* ════════════════════════════════════════════
+   Hallway — full-screen parallax + hotspots
+   ════════════════════════════════════════════ */
+
+.hallway {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #080502;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+}
+
+/* ── Background ── */
+.bgLayer {
+  position: absolute;
+  inset: -5%;   /* Extra space for parallax movement */
+  will-change: transform;
+  transform-origin: center center;
+  z-index: 0;
+}
+
+.bgImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Subtle vignette — keeps the image bright in the center */
+.bgVignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0.05) 20%,
+    rgba(0,0,0,0.15) 60%,
+    rgba(0,0,0,0.45) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Explore hint */
+.lookHint {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-xl);
+  z-index: 4;
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* ══════════════════════════════════════
+   HOTSPOT — pulsing dot on each door
+   ══════════════════════════════════════ */
+.hotspotWrapper {
+  position: absolute;
+  z-index: 6;
+  transform: translate(-50%, -50%);  /* center on coordinates */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* The clickable dot */
+.hotspotBtn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.hotspotBtn:focus-visible {
+  outline: 2px solid var(--color-accent-gold);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.hotspotBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Pulse ring 1 */
+.hotspotRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid;
+  animation: doorPulse 2.2s ease-out infinite;
+}
+
+/* Pulse ring 2 — offset delay */
+.hotspotRing2 {
+  animation-delay: 1.1s;
+}
+
+@keyframes doorPulse {
+  0%   { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Core dot */
+.hotspotCore {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.15s ease;
+}
+
+.hotspotBtn:hover .hotspotCore {
+  transform: scale(1.25);
+}
+
+/* ── Label popup — always stays inside viewport ── */
+.hotspotLabel {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  /* Default: centered */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(6,4,2,0.96);
+  border: 1px solid rgba(201,168,76,0.5);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  /* Fixed width — won't overflow */
+  width: clamp(140px, 24vw, 190px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 20px rgba(201,168,76,0.1);
+  pointer-events: auto;
+  z-index: 20;
+  /* Prevent any text wrapping that causes width overflow */
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Arrow pointing down to the dot */
+.hotspotLabel::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(201,168,76,0.45);
+}
+
+.hotspotLabelName {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hotspotEnterBtn {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.18em;
+  padding: 5px 16px;
+  background: transparent;
+  border: 1px solid;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.hotspotEnterBtn:hover {
+  background: rgba(201,168,76,0.12);
+}
+
+/* ══════════════════════════════
+   STAIRS CARD (kept as before)
+   ══════════════════════════════ */
+.stairsBtn {
+  position: absolute;
+  right: var(--spacing-xl);
+  bottom: calc(var(--footer-height) + 80px);
+  z-index: 5;
+  width: clamp(110px, 13vw, 165px);
+  height: clamp(70px, 9vw, 110px);
+  border: none;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 0 0 1px rgba(201,168,76,0.35);
+  transition: box-shadow 0.2s;
+  /* Ensure it stays inside viewport */
+  max-width: calc(100vw - var(--spacing-xl) * 2);
+}
+
+.stairsBtn:hover {
+  box-shadow: 0 0 0 2px var(--color-accent-gold), 0 0 20px rgba(201,168,76,0.25);
+}
+
+.stairsImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.stairsBtn:hover .stairsImg { transform: scale(1.06); }
+
+.stairsOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.stairsLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.stairsSub {
+  font-size: 0.5rem;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+  font-weight: var(--font-weight-normal);
+}
+
+/* ══════════════════════════════
+   BOTTOM BAR
+   ══════════════════════════════ */
+.bottomBar {
+  position: absolute;
+  bottom: calc(var(--footer-height) + var(--spacing-md));
+  left: var(--spacing-xl);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.mapBtn,
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+.mapBtn {
+  background: rgba(201,168,76,0.1);
+  border: 1px solid var(--color-accent-gold);
+  color: var(--color-accent-gold);
+}
+
+.mapBtn:hover {
+  background: var(--color-accent-gold);
+  color: var(--color-bg-primary);
+}
+
+.backBtn {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(240,234,214,0.2);
+  color: rgba(240,234,214,0.65);
+}
+
+.backBtn:hover {
+  border-color: var(--color-accent-gold);
+  color: var(--color-accent-gold);
+}
+
+/* ── Entering dots ── */
+.enteringDots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.enteringDots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: eDotPop 0.8s ease-in-out infinite;
+}
+.enteringDots span:nth-child(2) { animation-delay: 0.15s; }
+.enteringDots span:nth-child(3) { animation-delay: 0.30s; }
+
+/* ══════════════════════════════════════════
+   DOOR VIEW — full-screen immersive
+   ══════════════════════════════════════════ */
+.doorView {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* Full-screen background with parallax */
+.doorViewBg {
+  position: absolute;
+  inset: -6%;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.doorViewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.doorViewFallback {
+  width: 100%;
+  height: 100%;
+}
+
+/* Atmospheric gradient — dark at bottom for text readability */
+.doorViewOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.08) 40%,
+    rgba(0,0,0,0.65) 75%,
+    rgba(0,0,0,0.92) 100%
+  );
+  pointer-events: none;
+}
+
+/* Content at the bottom */
+.doorViewContent {
+  position: absolute;
+  bottom: calc(var(--footer-height) + var(--spacing-2xl));
+  left: var(--spacing-2xl);
+  right: var(--spacing-2xl);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-width: 560px;
+}
+
+.doorViewSublabel {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+}
+
+.doorViewTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.05;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+}
+
+.doorViewActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+/* Enter button */
+.doorEnterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-2xl);
+  border: none;
+  border-radius: var(--border-radius-md);
+  color: #050302;
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 1.5vw, 1rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  min-width: 180px;
+  justify-content: center;
+}
+.doorEnterBtn:hover:not(:disabled) { opacity: 0.9; }
+.doorEnterBtn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.doorCloseBtn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--border-radius-md);
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: var(--spacing-md) var(--spacing-xl);
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+.doorCloseBtn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* Close X top-right */
+.doorViewClose {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-xl);
+  z-index: 4;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+.doorViewClose:hover { background: rgba(0,0,0,0.8); color: #fff; }
+
+/* Entering dots */
+.enteringDots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.enteringDots span {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: eDotPop 0.8s ease-in-out infinite;
+}
+.enteringDots span:nth-child(2) { animation-delay: 0.15s; }
+.enteringDots span:nth-child(3) { animation-delay: 0.30s; }
+
+/* Door preview responsive */
+@media (max-width: 768px) {
+  .doorViewContent {
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    bottom: calc(var(--footer-height) + var(--spacing-xl));
+  }
+  .doorViewTitle { font-size: clamp(1.4rem, 6vw, 2.2rem); }
+  .doorViewActions { flex-direction: column; align-items: stretch; }
+  .doorEnterBtn, .doorCloseBtn { text-align: center; justify-content: center; }
+}
+
+/* ══════════════════════
+   RESPONSIVE
+   ══════════════════════ */
+
+@media (max-width: 768px) {
+  .hallway { cursor: default; touch-action: pan-y; }
+  .lookHint { display: none; }
+  .stairsBtn { right: var(--spacing-md); bottom: calc(var(--footer-height) + 60px); }
+  .bottomBar { left: var(--spacing-md); }
+
+  /* Scale up hotspots a bit on mobile for easier tapping */
+  .hotspotBtn { width: 52px; height: 52px; }
+  .hotspotCore { width: 20px; height: 20px; }
+}
+
+@media (max-width: 480px) {
+  .hotspotLabel { min-width: 130px; }
+  .hotspotLabelName { font-size: 0.6rem; }
+  .stairsBtn { width: 90px; height: 65px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspotRing, .hotspotRing2 { animation: none; }
+  .bgLayer { transition: none !important; }
+  .stairsImg { transition: none; }
+  .eDot { animation: none; opacity: 1; }
+}
+
+@keyframes eDotPop {
+  0%,80%,100% { transform: scale(0.6); opacity: 0.4; }
+  40%          { transform: scale(1.3); opacity: 1; }
+}
+
+/* Door preview responsive */
+@media (max-width: 768px) {
+  .doorPreviewCard { max-width: 100%; }
+  .doorPreviewImg  { height: clamp(240px, 45vh, 380px); }
+  .doorPreviewTitle { font-size: clamp(1.2rem, 5vw, 1.8rem); }
+  .doorPreviewActions { flex-direction: column; align-items: stretch; }
+  .doorEnterBtn, .doorCloseBtn { text-align: center; justify-content: center; }
+}

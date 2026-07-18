@@ -1,0 +1,80 @@
+/* Ambient audio floating button */
+.btn {
+  position: fixed;
+  bottom: calc(var(--footer-height) + var(--spacing-md));
+  right: var(--spacing-lg);
+  z-index: calc(var(--z-footer) + 5);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  background: rgba(10,8,4,0.75);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 20px;
+  color: rgba(240,234,214,0.55);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.btn:hover {
+  border-color: rgba(201,168,76,0.6);
+  color: var(--color-accent-gold);
+  background: rgba(10,8,4,0.88);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-accent-gold);
+  outline-offset: 3px;
+}
+
+.btnActive {
+  border-color: rgba(201,168,76,0.55);
+  color: var(--color-accent-gold);
+}
+
+/* Sound bars */
+.bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 14px;
+}
+
+.bar {
+  width: 2.5px;
+  height: var(--h, 60%);
+  background: currentColor;
+  border-radius: 2px;
+  opacity: 0.7;
+  transform-origin: bottom;
+}
+
+.barAnimate {
+  animation: barBounce calc(0.6s + var(--delay, 0s)) ease-in-out infinite alternate;
+}
+
+@keyframes barBounce {
+  from { transform: scaleY(0.4); opacity: 0.5; }
+  to   { transform: scaleY(1.0); opacity: 1; }
+}
+
+.label {
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+@media (max-width: 480px) {
+  .btn {
+    right: var(--spacing-md);
+    bottom: calc(var(--footer-height) + var(--spacing-sm));
+    padding: 5px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barAnimate { animation: none; }
+}

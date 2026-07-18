@@ -1,0 +1,465 @@
+# Plan de Implementación: Zapata Composiciones Virtual Office
+
+## Visión General
+
+Implementación incremental de una SPA inmersiva con React 18 + TypeScript + Vite que simula el recorrido físico por las instalaciones de Zapata Composiciones. El plan sigue el orden: scaffolding → tokens y estilos → estado global → componentes compartidos → sistema de routing → vistas principales → datos → tests de propiedades → tests de ejemplo → optimizaciones finales.
+
+Lenguaje de implementación: **TypeScript**
+
+---
+
+## Tareas
+
+- [x] 1. Scaffolding del proyecto y configuración base
+  - Crear el proyecto con `npm create vite@latest` usando la plantilla `react-ts`
+  - Instalar dependencias: `motion`, `react-router-dom`, `zustand`, `fast-check`
+  - Instalar dependencias de desarrollo: `vitest`, `@vitest/ui`, `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `jsdom`
+  - Configurar `vitest.config.ts` con `environment: 'jsdom'` y `setupFiles: ['./src/test/setup.ts']`
+  - Crear `src/test/setup.ts` con la importación de `@testing-library/jest-dom`
+  - Crear la estructura de directorios completa: `src/components/`, `src/views/`, `src/store/`, `src/data/`, `src/hooks/`, `src/styles/`, `src/router/`
+  - Crear subdirectorios para cada componente y vista según el diseño técnico
+  - _Requisitos: 12.1_
+
+- [x] 2. Design tokens, estilos globales y tipografía
+  - [x] 2.1 Crear `src/styles/tokens.css` con todas las CSS Custom Properties del diseño
+    - Definir paleta de colores: `--color-bg-primary: #0A0A0A`, `--color-bg-secondary: #111111`, `--color-accent-gold: #C9A84C`, `--color-accent-gold-light: #E8C96A`, `--color-text-primary: #F0EAD6`, `--color-text-secondary: #9A8C6E`, `--color-border`
+    - Definir tipografía: `--font-display` (Playfair Display / Georgia, serif), `--font-body` (Inter / Helvetica Neue, sans-serif)
+    - Definir espaciado: `--sidebar-width: 280px`, `--sidebar-width-collapsed: 56px`, `--footer-height: 64px`
+    - Definir animaciones: `--transition-duration: 600ms`, `--transition-easing`
+    - Definir sombras de iluminación: `--glow-gold`, `--glow-gold-strong`
+    - _Requisitos: 11.1, 11.2, 11.3, 11.4_
+  - [x] 2.2 Crear `src/styles/global.css` con reset CSS, estilos base y carga de fuentes Google Fonts
+    - Importar Playfair Display e Inter desde Google Fonts
+    - Aplicar box-sizing border-box, reset de márgenes y paddings
+    - Definir estilos base para `body` con fondo `--color-bg-primary` y color de texto `--color-text-primary`
+    - Agregar regla `@media (prefers-reduced-motion: reduce)` que deshabilite transiciones CSS globalmente
+    - _Requisitos: 11.1, 11.2, 11.3, 12.6_
+
+- [x] 3. Modelos de datos TypeScript e interfaces
+  - [x] 3.1 Crear `src/types/index.ts` con todas las interfaces y tipos del diseño
+    - Definir `DepartmentId = 1 | 2 | 3 | 4 | 5 | 6`
+    - Definir `ViewId = 'reception' | 'hallway' | 'department' | 'ceo' | 'about'`
+    - Definir `RoomId = DepartmentId | 'ceo'`
+    - Definir interfaces: `Service`, `FeaturedWork`, `WorkStep`, `ContactAction`, `DepartmentData`
+    - Definir interfaces: `CEOProfile`, `CEOStat`, `CEOSection`, `CompanyValue`
+    - Definir interfaces de props para todos los componentes: `DoorProps`, `DepartmentSidebarProps`, `AudioPlayerProps`, `OfficeMapProps`, `TransitionWrapperProps`, `NavigationState`
+    - _Requisitos: 4.1–4.8, 8.1–8.9, 9.1–9.4_
+  - [x] 3.2 Crear `src/data/departments.ts` con los datos completos de los 6 departamentos
+    - Implementar array `DEPARTMENTS: DepartmentData[]` con los 6 objetos completos
+    - Dept 1 (composicion-musical): servicios [Composición de canciones, Letras y melodías, Canciones personalizadas, Asesoría creativa], CTA "Solicitar servicio"
+    - Dept 2 (proyectos-remixes): servicios [Remixes profesionales, Edición de audio, Reversiones, Proyectos musicales], CTA "Enviar demo"
+    - Dept 3 (produccion-musical): servicios [Producción musical, Grabación de voces, Mezcla y masterización, Beats personalizados], CTA "Iniciar demo"
+    - Dept 4 (marketing-lanzamientos): servicios [Estrategia de lanzamiento, Campañas publicitarias, Gestión de redes sociales, Distribución digital], CTA "Hablemos"
+    - Dept 5 (relaciones-artisticas): servicios [Gestión de colaboraciones, Búsqueda de talento, Networking musical, Asesoría artística], CTA "Colaborar"
+    - Dept 6 (derechos-autor): servicios [Registro de obras, Contratos musicales, Asesoría legal, Gestión de regalías] + documentos descargables, CTA "Consultar"
+    - Incluir proceso de trabajo (mínimo 3 pasos) y `ambientColor` para cada departamento
+    - Exportar función helper `getDepartmentBySlug(slug: string): DepartmentData | undefined`
+    - Exportar función helper `getDepartmentRoute(id: DepartmentId): string`
+    - _Requisitos: 5.1–5.6_
+  - [x] 3.3 Crear `src/data/ceo.ts` con el perfil completo del CEO
+    - Implementar objeto `CEO_PROFILE: CEOProfile` con nombre "Emmanuel Segura Zapata", cargo, estadísticas [+150 canciones, +50 artistas, +30M reproducciones], secciones [Mi historia, Misión y visión, Valores, Logros]
+    - _Requisitos: 8.3, 8.4, 8.6_
+  - [x] 3.4 Crear `src/data/company.ts` con los valores fundacionales de la empresa
+    - Implementar array `COMPANY_VALUES: CompanyValue[]` con los 4 valores: Profesionalismo, Creatividad, Compromiso, Calidad
+    - _Requisitos: 9.1, 9.2_
+
+- [x] 4. Zustand stores — estado global de navegación y audio
+  - [x] 4.1 Crear `src/store/navigationStore.ts` implementando `NavigationState`
+    - Implementar acciones: `navigateTo`, `startTransition`, `endTransition`, `openMap`, `closeMap`
+    - El estado inicial debe tener `activeView: 'reception'`, `isTransitioning: false`, `isMapOpen: false`, `activeDepartmentId: null`
+    - La acción `navigateTo` debe setear `isTransitioning: true` antes de navegar
+    - _Requisitos: 6.1, 6.3, 6.4_
+  - [x] 4.2 Crear `src/store/audioStore.ts` con estado del reproductor de audio global
+    - Implementar estado: `currentTrack`, `isPlaying`, `volume`
+    - Implementar acciones: `play`, `pause`, `setTrack`, `setVolume`
+    - _Requisitos: 4.4_
+
+- [x] 5. Custom hooks de navegación y accesibilidad
+  - [x] 5.1 Crear `src/hooks/useNavigationLock.ts`
+    - Implementar hook que lee `isTransitioning` del `navigationStore`
+    - Retornar `navigate` wrapper que ignora llamadas cuando `isTransitioning === true`
+    - Retornar `isLocked: boolean`
+    - _Requisitos: 6.4_
+  - [x] 5.2 Crear `src/hooks/useKeyboardNav.ts`
+    - Implementar hook que acepta `onEnter: () => void` y `onEscape?: () => void`
+    - Retornar `{ onKeyDown: React.KeyboardEventHandler }` que responde a `Enter`, `Space` y `Escape`
+    - _Requisitos: 12.2_
+
+- [x] 6. Componente `TransitionWrapper` — animaciones de entrada/salida
+  - [x] 6.1 Crear `src/components/TransitionWrapper/TransitionWrapper.tsx`
+    - Implementar componente con `motion.div` de la librería `motion/react`
+    - Soportar variantes: `'fade'`, `'slide-left'`, `'slide-right'`, `'zoom-in'`
+    - Definir `initial`, `animate`, `exit` para cada variante con duración ≤600ms usando `--transition-duration`
+    - Detectar `prefers-reduced-motion: reduce` con `window.matchMedia` y usar variante `null` (cambio instantáneo) como fallback
+    - _Requisitos: 6.1, 6.2, 12.6_
+  - [x] 6.2 Crear `src/components/TransitionWrapper/TransitionWrapper.module.css`
+    - Estilos base del wrapper (position, width, height)
+    - _Requisitos: 6.2_
+  - [ ]* 6.3 Escribir tests de ejemplo para `TransitionWrapper`
+    - Test: con `prefers-reduced-motion: reduce`, las animaciones se eliminan y el contenido es accesible
+    - Test: el contenido hijo se renderiza correctamente dentro del wrapper
+    - _Requisitos: 6.2, 12.6_
+
+- [x] 7. Componente `AudioPlayer` — reproductor HTML5 accesible
+  - [x] 7.1 Crear `src/components/AudioPlayer/AudioPlayer.tsx`
+    - Implementar wrapper sobre `<audio>` nativo con controles de play/pause, progreso y volumen
+    - Agregar `aria-label` descriptivo con título y artista
+    - Implementar handler `onError` que muestra estado de error accesible con `aria-live="polite"`
+    - Conectar con `audioStore` de Zustand para estado global del reproductor
+    - Soportar formatos MP3/OGG con elementos `<source>` múltiples
+    - _Requisitos: 4.4, 12.2, 12.3_
+  - [x] 7.2 Crear `src/components/AudioPlayer/AudioPlayer.module.css`
+    - Estilos con paleta oscura/dorada, controles accesibles con foco visible
+    - _Requisitos: 11.1, 11.2_
+  - [ ]* 7.3 Escribir tests de ejemplo para `AudioPlayer`
+    - Test: renderiza con `aria-label` correcto dado título y artista
+    - Test: muestra mensaje de error accesible al fallar la carga del audio
+    - _Requisitos: 4.4, 12.3_
+
+- [x] 8. Componente `DepartmentSidebar` — menú lateral persistente
+  - [x] 8.1 Crear `src/components/DepartmentSidebar/DepartmentSidebar.tsx`
+    - Renderizar lista de los 6 departamentos con nombre y número, leídos desde `DEPARTMENTS`
+    - Aplicar estilo activo (color dorado) al ítem correspondiente a `activeDepartmentId`
+    - Implementar comportamiento colapsable en móvil usando prop `isMobileCollapsed`
+    - Añadir `data-testid="dept-sidebar"` al elemento raíz
+    - Cada ítem debe tener `tabIndex={0}`, `role="button"` y responder a teclado vía `useKeyboardNav`
+    - _Requisitos: 3.1, 3.2, 3.3, 3.4, 3.5, 12.2_
+  - [x] 8.2 Crear `src/components/DepartmentSidebar/DepartmentSidebar.module.css`
+    - Posicionamiento fijo lateral izquierdo con `--sidebar-width`
+    - Estilos de colapso móvil con transición CSS
+    - Estilos de ítem activo con `--color-accent-gold`
+    - _Requisitos: 3.5, 11.2_
+  - [ ]* 8.3 Escribir property test para `DepartmentSidebar` — Property 2
+    - **Property 2: Navegación del sidebar a departamento**
+    - **Validates: Requisito 3.3**
+    - Para cualquier `DepartmentId` (1–6), activar ese ítem SHALL invocar `onNavigate` con el id correcto
+    - _Requisitos: 3.3_
+  - [ ]* 8.4 Escribir property test para `DepartmentSidebar` — Property 4
+    - **Property 4: Ítem activo en el Sidebar coincide con el departamento activo**
+    - **Validates: Requisito 3.4**
+    - Para cualquier `activeDepartmentId` válido, exactamente un ítem SHALL tener la clase activa y SHALL corresponder al id correcto
+    - _Requisitos: 3.4_
+
+- [x] 9. Componente `OfficeMap` — plano interactivo modal
+  - [x] 9.1 Crear `src/components/OfficeMap/OfficeMap.tsx`
+    - Implementar modal overlay con representación visual de los 6 departamentos + CEO Room
+    - Resaltar la sala activa según `activeRoomId` prop
+    - Invocar `onNavigate` con el `RoomId` al activar una sala
+    - Implementar cierre con botón, tecla `Escape` y click fuera del modal
+    - Añadir `role="dialog"`, `aria-modal="true"` y `aria-label="Mapa de oficina"`
+    - _Requisitos: 7.1, 7.2, 7.3, 7.4, 12.2_
+  - [x] 9.2 Crear `src/components/OfficeMap/OfficeMap.module.css`
+    - Overlay con fondo semitransparente, plano centrado con estilos dorados
+    - _Requisitos: 11.1, 11.2_
+  - [ ]* 9.3 Escribir property test para `OfficeMap` — Property 11
+    - **Property 11: OfficeMap indica la sala activa correcta**
+    - **Validates: Requisito 7.3**
+    - Para cualquier `activeRoomId` válido, exactamente una sala SHALL tener el estilo de activo y SHALL corresponder al id correcto
+    - _Requisitos: 7.3_
+  - [ ]* 9.4 Escribir tests de ejemplo para `OfficeMap`
+    - Test: cierra el modal al presionar `Escape`
+    - Test: invoca `onNavigate` con el id correcto al activar una sala
+    - _Requisitos: 7.1, 7.2_
+
+- [x] 10. Componente `ContactFooter` — footer persistente
+  - [x] 10.1 Crear `src/components/ContactFooter/ContactFooter.tsx`
+    - Implementar enlace "Recepción / Volver al inicio" que navega a `/`
+    - Implementar enlace de WhatsApp, email, y web externa que abren en `_blank`
+    - Implementar iconos de Instagram, YouTube, TikTok y Spotify con enlace a `_blank`
+    - Mostrar copyright "Zapata Composiciones © 2025 | Todos los derechos reservados"
+    - Añadir `data-testid="contact-footer"` al elemento raíz
+    - Todos los enlaces externos deben tener `rel="noopener noreferrer"`
+    - _Requisitos: 10.1–10.8, 12.2_
+  - [x] 10.2 Crear `src/components/ContactFooter/ContactFooter.module.css`
+    - Posicionamiento inferior con `--footer-height`, estilos de iconos en dorado
+    - _Requisitos: 11.1, 11.2_
+  - [ ]* 10.3 Escribir property test para `ContactFooter` — Property 13
+    - **Property 13: Contact Footer presente en todas las vistas excepto Reception**
+    - **Validates: Requisito 10.1**
+    - Para cualquier vista no-Reception, `data-testid="contact-footer"` SHALL estar presente en el árbol renderizado
+    - _Requisitos: 10.1_
+  - [ ]* 10.4 Escribir tests de ejemplo para `ContactFooter`
+    - Test: renderiza los 4 enlaces de redes sociales con href correctos
+    - Test: renderiza enlace de WhatsApp y email
+    - Test: muestra texto de copyright correcto
+    - _Requisitos: 10.3, 10.4, 10.6, 10.8_
+
+- [x] 11. Componente `LoadingScreen` y manejo de errores
+  - [x] 11.1 Crear `src/components/LoadingScreen/LoadingScreen.tsx`
+    - Implementar indicador de carga con estética dorada sobre fondo negro
+    - Usar `aria-live="polite"` para anunciar estado de carga
+    - _Requisitos: 12.5_
+  - [x] 11.2 Crear `src/components/ErrorBoundary/ErrorBoundary.tsx`
+    - Implementar class component que atrapa errores de chunks lazy-loaded
+    - Mostrar vista de error con estética Virtual_Office, mensaje y botón de reintento
+    - Incluir `DepartmentSidebar` en la vista de error para acceso directo
+    - _Requisitos: 12.6_
+  - [x] 11.3 Crear `src/views/NotFound/NotFound.tsx`
+    - Implementar vista 404 con mensaje "esa sala no existe"
+    - Incluir botón de retorno a Reception y `DepartmentSidebar` visible
+    - _Requisitos: 6.1_
+
+- [ ] 12. Checkpoint — Componentes compartidos listos
+  - Verificar que todos los componentes compartidos compilan sin errores TypeScript
+  - Ejecutar `npx vitest --run` para confirmar que los tests existentes pasan
+  - Comprobar que los tipos de `src/types/index.ts` son coherentes con los datos de `src/data/`
+  - Confirmar con el usuario si hay dudas antes de continuar con las vistas
+
+- [ ] 13. Sistema de routing — `AppRouter` con `AnimatePresence`
+  - [ ] 13.1 Crear `src/router/AppRouter.tsx` con toda la configuración de rutas
+    - Implementar `BrowserRouter` con `AnimatePresence` del paquete `motion/react` como wrapper
+    - Definir rutas: `/` → Reception (eager), `/hallway` → Hallway (lazy), `/department/:slug` → DepartmentOffice (lazy), `/ceo` → CEORoom (lazy), `/about` → AboutSection (lazy), `*` → NotFound
+    - Envolver cada vista lazy con `React.Suspense` usando `LoadingScreen` como fallback
+    - Envolver cada vista lazy con `ErrorBoundary`
+    - Integrar `DepartmentSidebar` y `ContactFooter` en el layout de todas las vistas excepto Reception
+    - Leer `activeView` y `activeDepartmentId` del `navigationStore` para pasar al `DepartmentSidebar`
+    - _Requisitos: 6.1, 6.5, 12.1_
+  - [ ] 13.2 Actualizar `src/App.tsx` para renderizar `AppRouter`
+    - Importar `tokens.css` y `global.css` en `App.tsx`
+    - _Requisitos: 6.1_
+  - [ ]* 13.3 Escribir property test para routing — Property 10
+    - **Property 10: Deep-linking funciona para cualquier ruta de departamento**
+    - **Validates: Requisito 6.5**
+    - Para cualquier slug de departamento válido, acceder a `/department/:slug` SHALL renderizar el `DepartmentOffice` correcto sin redirigir a Reception
+    - _Requisitos: 6.5_
+  - [ ]* 13.4 Escribir property test para routing — Property 3
+    - **Property 3: Sidebar presente en todas las vistas excepto Reception**
+    - **Validates: Requisito 3.1**
+    - Para cualquier ruta no-Reception, `data-testid="dept-sidebar"` SHALL estar presente en el árbol renderizado
+    - _Requisitos: 3.1_
+
+- [ ] 14. Vista `Reception` — pantalla de bienvenida
+  - [ ] 14.1 Crear `src/views/Reception/Reception.tsx`
+    - Implementar vista de pantalla completa con logotipo iluminado de Zapata Composiciones centrado
+    - Agregar elemento decorativo de disco de oro con CSS/SVG
+    - Agregar plantas decorativas como elementos de ambientación
+    - Implementar botón CTA "Entrar a la oficina" o "Comenzar recorrido"
+    - Al activar el CTA, invocar `useNavigationLock`'s `navigate('/hallway')`
+    - Envolver con `<TransitionWrapper variant="fade" />`
+    - Aplicar layout responsivo para pantallas desde 320px de ancho
+    - Asegurar que `DepartmentSidebar` y `ContactFooter` NO se renderizan en esta vista
+    - _Requisitos: 1.1–1.7_
+  - [ ] 14.2 Crear `src/views/Reception/Reception.module.css`
+    - Layout centrado full-screen, iluminación ambiental con gradientes y `--glow-gold`
+    - Estilos responsivos `@media (max-width: 320px)`
+    - _Requisitos: 1.2, 1.7, 11.4_
+  - [ ]* 14.3 Escribir tests de ejemplo para `Reception`
+    - Test: renderiza el logotipo de Zapata Composiciones
+    - Test: renderiza el elemento disco de oro
+    - Test: renderiza el botón CTA con texto correcto
+    - Test: al hacer click en CTA, navega a `/hallway`
+    - _Requisitos: 1.2, 1.3, 1.5, 1.6_
+
+- [ ] 15. Vista `Hallway` — pasillo con perspectiva 3D CSS
+  - [ ] 15.1 Crear `src/views/Hallway/Hallway.tsx`
+    - Implementar estructura con `perspective` y `transform-style: preserve-3d` CSS para profundidad
+    - Renderizar exactamente 6 componentes `Door` usando los datos de `DEPARTMENTS`
+    - Cada `Door` debe recibir `departmentId`, `label`, `number` y `onClick`
+    - `onClick` invoca `useNavigationLock`'s `navigate('/department/:slug')`
+    - Incluir control de acceso al `OfficeMap` (botón que abre el modal)
+    - Envolver con `<TransitionWrapper variant="slide-left" />`
+    - Aplicar layout responsivo: en móvil reorganizar puertas en lista/cuadrícula desplazable
+    - _Requisitos: 2.1–2.7_
+  - [ ] 15.2 Crear `src/views/Hallway/Door.tsx` — componente de puerta individual
+    - Implementar efecto hover: resaltado, cambio de escala o efecto de brillo con Motion
+    - Añadir `tabIndex={0}`, `role="button"`, `aria-label` con nombre del departamento
+    - Usar `useKeyboardNav` para responder a `Enter` y `Space`
+    - _Requisitos: 2.4, 12.2_
+  - [ ] 15.3 Crear `src/views/Hallway/Hallway.module.css`
+    - Perspectiva 3D CSS, paleta oscura/dorada, estilos de puerta con hover
+    - Estilos responsivos para móvil
+    - _Requisitos: 2.1, 2.3, 2.7_
+  - [ ]* 15.4 Escribir property test para `Hallway` — Property 1
+    - **Property 1: Navegación de puerta a departamento**
+    - **Validates: Requisito 2.5**
+    - Para cualquier índice de puerta (1–6), al activar esa puerta SHALL invocarse `navigate` con la ruta del departamento correspondiente a ese índice
+    - _Requisitos: 2.5_
+  - [ ]* 15.5 Escribir tests de ejemplo para `Hallway`
+    - Test: renderiza exactamente 6 puertas con nombres correctos de departamentos
+    - Test: el control de acceso al OfficeMap está presente
+    - _Requisitos: 2.2, 2.6_
+
+- [ ] 16. Vista `DepartmentOffice` — interior genérico de departamento
+  - [ ] 16.1 Crear `src/views/DepartmentOffice/DepartmentOffice.tsx`
+    - Leer `:slug` con `useParams()` y buscar datos con `getDepartmentBySlug`
+    - Renderizar nombre del departamento como `<h1>` sobre imagen ambiental de fondo
+    - Renderizar sección de servicios como lista (`<ul>`) con mínimo 4 ítems
+    - Renderizar sección `FeaturedWorks`: proyectos de audio con `<AudioPlayer>`, visuales con thumbnail clicable
+    - Renderizar sección `WorkProcess` con pasos numerados (mínimo 3)
+    - Renderizar botón CTA principal con el texto de `contactAction.label`
+    - Al activar CTA, invocar `window.open(contactAction.url, '_blank', 'noopener')`
+    - Renderizar botón "Volver al pasillo" que navega a `/hallway`
+    - Implementar handler `onError` en `<img>` con placeholder dorado de Zapata
+    - Envolver con `<TransitionWrapper variant="zoom-in" />`
+    - Aplicar layout responsivo: flujo vertical desplazable en móvil
+    - _Requisitos: 4.1–4.10_
+  - [ ] 16.2 Crear `src/views/DepartmentOffice/DepartmentOffice.module.css`
+    - Imagen de fondo con overlay oscuro, secciones con separadores dorados
+    - Estilos responsivos para móvil
+    - _Requisitos: 4.2, 4.10, 11.4_
+  - [ ] 16.3 Manejar caso de slug no encontrado en `DepartmentOffice`
+    - Si `getDepartmentBySlug` retorna `undefined`, redirigir a la vista `NotFound`
+    - _Requisitos: 6.1_
+  - [ ]* 16.4 Escribir property test para `DepartmentOffice` — Property 5
+    - **Property 5: Cada departamento tiene su vista con encabezado correcto**
+    - **Validates: Requisitos 4.1, 4.2**
+    - Para cualquier objeto `DepartmentData` válido (de los 6), renderizar `DepartmentOffice` con esos datos SHALL mostrar el `<h1>` con exactamente el nombre del departamento
+    - _Requisitos: 4.1, 4.2_
+  - [ ]* 16.5 Escribir property test para `DepartmentOffice` — Property 6
+    - **Property 6: Cada departamento incluye sus secciones obligatorias**
+    - **Validates: Requisitos 4.3, 4.4, 4.5, 4.6, 4.8**
+    - Para cualquier `DepartmentData` con datos válidos, renderizar `DepartmentOffice` SHALL mostrar: sección servicios con ≥4 ítems, sección Featured_Works, sección Work_Process con ≥3 pasos, botón CTA y botón "Volver al pasillo"
+    - _Requisitos: 4.3, 4.4, 4.5, 4.6, 4.8_
+  - [ ]* 16.6 Escribir property test para `DepartmentOffice` — Property 7
+    - **Property 7: El CTA de contacto abre la URL correcta en nueva pestaña**
+    - **Validates: Requisito 4.7**
+    - Para cualquier `DepartmentData` con `contactAction.url` definida, al hacer click en el botón CTA SHALL invocarse `window.open` con esa URL exacta y target `_blank`
+    - _Requisitos: 4.7_
+  - [ ]* 16.7 Escribir tests de ejemplo para `DepartmentOffice`
+    - Test por cada uno de los 6 departamentos: verifica servicios específicos según Requisito 5
+    - Test por cada uno de los 6 departamentos: verifica texto del botón CTA correcto
+    - Test: el botón "Volver al pasillo" navega a `/hallway`
+    - _Requisitos: 5.1–5.6, 4.8, 4.9_
+
+- [x] 17. Vista `CEORoom` — perfil del director
+  - [x] 17.1 Crear `src/views/CEORoom/CEORoom.tsx`
+    - Mostrar logo de Zapata Composiciones en la parte superior
+    - Mostrar nombre "Emmanuel Segura Zapata", cargo y fotografía/ilustración
+    - Renderizar secciones: Mi historia, Misión y visión, Valores, Logros
+    - Mostrar estadísticas con formato visual diferenciado: +150 canciones, +50 artistas, +30M reproducciones
+    - Mostrar mensaje de bienvenida personal del CEO
+    - Mostrar firma manuscrita como elemento `<img>` con `alt` descriptivo
+    - Implementar botón "Hablemos directo" que abre WhatsApp en `_blank`
+    - Envolver con `<TransitionWrapper variant="fade" />`
+    - _Requisitos: 8.1–8.9_
+  - [x] 17.2 Crear `src/views/CEORoom/CEORoom.module.css`
+    - Estética oscura y lujosa consistente con el resto del Virtual_Office
+    - _Requisitos: 8.9, 11.1, 11.2_
+  - [ ]* 17.3 Escribir tests de ejemplo para `CEORoom`
+    - Test: renderiza nombre y cargo del CEO correctamente
+    - Test: muestra las 4 estadísticas con valores correctos (+150, +50, +30M)
+    - Test: botón WhatsApp tiene href correcto y abre en `_blank`
+    - Test: imagen de firma tiene `alt` no vacío
+    - _Requisitos: 8.3, 8.6, 8.8, 12.3_
+
+- [x] 18. Vista `AboutSection` — valores de la empresa
+  - [x] 18.1 Crear `src/views/AboutSection/AboutSection.tsx`
+    - Renderizar los 4 valores fundacionales desde `COMPANY_VALUES`
+    - Cada valor con ícono SVG diferenciador, título y descripción breve
+    - Implementar control de retorno al Hallway (`navigate('/hallway')`)
+    - Envolver con `<TransitionWrapper variant="fade" />`
+    - _Requisitos: 9.1–9.4_
+  - [x] 18.2 Crear `src/views/AboutSection/AboutSection.module.css`
+    - Grid de valores con íconos dorados, estética oscura/lujosa
+    - _Requisitos: 9.2, 11.4_
+  - [ ]* 18.3 Escribir tests de ejemplo para `AboutSection`
+    - Test: renderiza exactamente los 4 valores con sus títulos: Profesionalismo, Creatividad, Compromiso, Calidad
+    - Test: cada valor tiene un ícono (elemento visual diferenciador)
+    - Test: control de retorno al Hallway está presente
+    - _Requisitos: 9.1, 9.2, 9.4_
+
+- [ ] 19. Checkpoint — Vistas principales completas
+  - Ejecutar `npx vitest --run` para confirmar que todos los tests pasan
+  - Verificar que las rutas `/`, `/hallway`, `/department/composicion-musical`, `/ceo`, `/about` se renderizan correctamente
+  - Verificar que el `DepartmentSidebar` y `ContactFooter` NO aparecen en la Reception pero SÍ en todas las demás vistas
+  - Confirmar con el usuario si hay dudas antes de continuar con los property tests restantes
+
+- [ ] 20. Property-based tests — navegación y estado global
+  - [ ]* 20.1 Escribir property test — Property 8: Transiciones completan dentro de 600ms
+    - **Property 8: Transiciones completan dentro de 600ms**
+    - **Validates: Requisito 6.2**
+    - Para cualquier acción de navegación entre vistas, verificar que los valores de `duration` en las variantes de `TransitionWrapper` son ≤0.6 (600ms)
+    - Verificar que `--transition-duration` en los tokens CSS es `600ms`
+    - _Requisitos: 6.2_
+  - [ ]* 20.2 Escribir property test — Property 9: Bloqueo de navegación durante transiciones
+    - **Property 9: Bloqueo de navegación durante transiciones**
+    - **Validates: Requisito 6.4**
+    - Para cualquier estado con `isTransitioning = true`, cualquier llamada adicional al `navigate` wrapper de `useNavigationLock` SHALL ser ignorada sin modificar el historial
+    - _Requisitos: 6.4_
+  - [ ]* 20.3 Escribir property test — Property 12: OfficeMap accesible desde cualquier vista excepto Reception
+    - **Property 12: OfficeMap accesible desde cualquier vista excepto Reception**
+    - **Validates: Requisito 7.4**
+    - Para cualquier vista no-Reception renderizada con el layout completo, el control de acceso al OfficeMap SHALL estar presente y ser activable (tener un `data-testid` o `aria-label` identificable)
+    - _Requisitos: 7.4_
+
+- [ ] 21. Property-based tests — accesibilidad universal
+  - [ ]* 21.1 Escribir property test — Property 14: Todos los elementos interactivos son accesibles por teclado
+    - **Property 14: Todos los elementos interactivos son accesibles por teclado**
+    - **Validates: Requisito 12.2**
+    - Para cualquier elemento interactivo del Virtual_Office (Door, botones, ítems de sidebar, controles del mapa), generar con `fc.constantFrom` los selectores de cada tipo de elemento interactivo y verificar: `tabIndex >= 0`, `role` semántico adecuado, y respuesta a eventos `keydown` con `Enter` y `Space`
+    - _Requisitos: 12.2_
+  - [ ]* 21.2 Escribir property test — Property 15: Imágenes no decorativas tienen texto alternativo no vacío
+    - **Property 15: Imágenes no decorativas tienen texto alternativo no vacío**
+    - **Validates: Requisito 12.3**
+    - Para cualquier vista del Virtual_Office (usando `fc.constantFrom` con las 5 rutas principales), renderizarla y verificar que todos los `<img>` sin `aria-hidden="true"` tienen `alt` no vacío
+    - _Requisitos: 12.3_
+
+- [ ] 22. Tests de integración — flujos de navegación completos
+  - [ ]* 22.1 Escribir test de integración: flujo Reception → Hallway → DepartmentOffice
+    - Renderizar `<App />` en `/`
+    - Simular click en botón CTA de Reception
+    - Verificar navegación a `/hallway`
+    - Simular click en una puerta del Hallway
+    - Verificar renderizado del `DepartmentOffice` correcto
+    - _Requisitos: 1.6, 2.5_
+  - [ ]* 22.2 Escribir test de integración: deep-link directo a departamento
+    - Renderizar `<App />` directamente en `/department/composicion-musical`
+    - Verificar que renderiza `DepartmentOffice` de Composición Musical sin pasar por Reception
+    - Verificar que `DepartmentSidebar` está presente
+    - _Requisitos: 6.5_
+  - [ ]* 22.3 Escribir test de smoke: configuración de rutas registradas
+    - Verificar que todas las rutas (`/`, `/hallway`, `/department/composicion-musical`, `/ceo`, `/about`) están registradas y renderizan sin errores
+    - _Requisitos: 6.1_
+
+- [ ] 23. Tests de edge cases — accesibilidad y rendimiento
+  - [ ]* 23.1 Escribir test: `prefers-reduced-motion: reduce` elimina animaciones
+    - Mockear `window.matchMedia` para devolver `matches: true`
+    - Verificar que `TransitionWrapper` usa variantes `null` o `duration: 0`
+    - Verificar que el contenido sigue siendo accesible
+    - _Requisitos: 12.6_
+  - [ ]* 23.2 Escribir test: carga de imagen fallida muestra placeholder
+    - Simular evento `error` en `<img>` dentro de `DepartmentOffice`
+    - Verificar que se muestra el placeholder oscuro con ícono dorado
+    - _Requisitos: 4.2_
+  - [ ]* 23.3 Escribir test: carga de audio fallida muestra mensaje accesible
+    - Simular evento `error` en `<audio>` dentro de `AudioPlayer`
+    - Verificar que se muestra un mensaje de error con `aria-live="polite"`
+    - _Requisitos: 4.4, 12.5_
+  - [ ]* 23.4 Escribir test: viewport de 320px sin overflow horizontal
+    - Configurar viewport de 320px de ancho
+    - Renderizar cada vista principal
+    - Verificar que `document.body.scrollWidth <= 320`
+    - _Requisitos: 1.7, 2.7, 3.5, 4.10_
+
+- [ ] 24. Optimizaciones de rendimiento y accesibilidad final
+  - [ ] 24.1 Verificar code-splitting: cada vista lazy genera su propio chunk en el build
+    - Ejecutar `npm run build` y verificar que Vite genera chunks separados para Hallway, DepartmentOffice, CEORoom, AboutSection
+    - _Requisitos: 12.1_
+  - [ ] 24.2 Añadir `loading="lazy"` a imágenes de fondo y thumbnails de FeaturedWorks
+    - Aplicar en `DepartmentOffice`, `CEORoom` y `AboutSection`
+    - _Requisitos: 12.1_
+  - [ ] 24.3 Verificar contraste de color WCAG 2.1 AA
+    - Comprobar que `--color-text-primary (#F0EAD6)` sobre `--color-bg-primary (#0A0A0A)` tiene ratio ≥ 4.5:1
+    - Comprobar que `--color-accent-gold (#C9A84C)` sobre `--color-bg-primary (#0A0A0A)` cumple ratio ≥ 4.5:1 para texto grande
+    - _Requisitos: 12.4_
+  - [ ] 24.4 Añadir `<title>` y `<meta name="description">` dinámicos según la vista activa
+    - Actualizar el `<title>` del documento al navegar a cada vista usando `useEffect`
+    - _Requisitos: 12.2_
+
+- [ ] 25. Checkpoint final — Verificación completa del proyecto
+  - Ejecutar `npx vitest --run` para confirmar que todos los tests pasan (incluyendo las 15 propiedades × 100 iteraciones)
+  - Ejecutar `npm run build` y confirmar que no hay errores de compilación TypeScript
+  - Verificar cobertura: líneas ≥80%, branches ≥75%, funciones ≥85%
+  - Confirmar con el usuario si hay dudas o ajustes finales antes de cerrar
+
+---
+
+## Notas
+
+- Las tareas marcadas con `*` son opcionales y pueden omitirse para un MVP más rápido
+- El lenguaje de implementación es **TypeScript** en todo el proyecto
+- Cada tarea referencia los requisitos específicos para trazabilidad completa
+- Los property-based tests usan `fast-check` con mínimo 100 iteraciones por propiedad (1.500 ejecuciones totales para las 15 propiedades)
+- Los tests unitarios y de propiedad son complementarios: los de ejemplo validan casos específicos, los de propiedad validan comportamientos universales
+- Los checkpoints en las tareas 12, 19 y 25 aseguran validación incremental antes de avanzar a la siguiente fase
+- La estructura de datos en `src/data/` actúa como única fuente de verdad para todos los componentes y tests

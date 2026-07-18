@@ -1,0 +1,342 @@
+/* ════════════════════════════════════════════════════════
+   DepartmentOffice — full-screen immersive with hotspot
+   ════════════════════════════════════════════════════════ */
+
+.page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #0a0805;
+  /* NO padding-left — sidebar is floating overlay now */
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* ── Background — large to allow parallax movement ── */
+.bg {
+  position: absolute;
+  inset: -5%;   /* 5% extra on all sides for parallax range */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+
+/*
+  VIGNETTE ONLY — very light, just darkens the very edges.
+  The center of the image stays FULL BRIGHTNESS.
+  This lets the lights and colours of the photo shine through.
+*/
+.bgVignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0,0,0,0.25) 70%,
+    rgba(0,0,0,0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Explore hint ── */
+.lookHint {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-xl);
+  z-index: 4;
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+/* ════════════════════════════
+   HOTSPOT — golden pulsing dot
+   ════════════════════════════ */
+.hotspotBtn {
+  position: absolute;
+  /* Centered slightly lower-left — feels like an object in the room */
+  bottom: 35%;
+  left: 45%;
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hotspotBtn:focus-visible {
+  outline: 2px solid var(--color-accent-gold);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+/* Outer pulse ring 1 */
+.hotspotRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.6);
+  animation: hotspotPulse 2.4s ease-out infinite;
+}
+
+/* Outer pulse ring 2 — offset */
+.hotspotRing2 {
+  animation-delay: 1.2s;
+}
+
+@keyframes hotspotPulse {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Core dot */
+.hotspotCore {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent-gold);
+  box-shadow:
+    0 0 0 3px rgba(201,168,76,0.3),
+    0 0 20px rgba(201,168,76,0.6),
+    0 0 40px rgba(201,168,76,0.3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Tooltip that appears on hover */
+.hotspotTooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10,8,4,0.88);
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: var(--border-radius-md);
+  padding: 5px 12px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: var(--color-accent-gold);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.hotspotBtn:hover .hotspotTooltip,
+.hotspotBtn:focus-visible .hotspotTooltip {
+  opacity: 1;
+}
+
+/* ════════════════════════════════════════════
+   INFO PANEL — slides up from bottom on click
+   ════════════════════════════════════════════ */
+.infoPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  background: linear-gradient(
+    to top,
+    rgba(8,6,3,0.97) 0%,
+    rgba(8,6,3,0.90) 60%,
+    rgba(8,6,3,0.70) 85%,
+    transparent 100%
+  );
+  backdrop-filter: blur(8px);
+  padding: var(--spacing-xl) var(--spacing-2xl);
+  padding-bottom: calc(var(--footer-height) + var(--spacing-xl));
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Close button */
+.closePanelBtn {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-xl);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+}
+.closePanelBtn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* Panel header */
+.panelHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.deptBadge {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  border: 1px solid;
+  border-radius: var(--border-radius-sm);
+  padding: 3px var(--spacing-sm);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  width: fit-content;
+  background: rgba(0,0,0,0.3);
+}
+
+.deptName {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.deptTagline {
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+  color: rgba(240,234,214,0.75);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Services chips */
+.servicesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.serviceChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: rgba(240,234,214,0.75);
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px;
+  padding: 4px var(--spacing-sm);
+  letter-spacing: 0.04em;
+}
+
+.serviceChipDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent-gold);
+  flex-shrink: 0;
+}
+
+/* Actions row */
+.panelActions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* AI assistant button */
+.assistantBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-2xl);
+  background: var(--color-accent-gold);
+  border: none;
+  border-radius: var(--border-radius-md);
+  color: var(--color-bg-primary);
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 1.4vw, 0.95rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.assistantBtn:hover { opacity: 0.9; }
+
+/* WhatsApp button */
+.whatsappBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-xl);
+  background: rgba(37,211,102,0.15);
+  border: 1px solid rgba(37,211,102,0.5);
+  border-radius: var(--border-radius-md);
+  color: #4ade80;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.whatsappBtn:hover { background: rgba(37,211,102,0.25); }
+
+/* Back button */
+.backBtn {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(240,234,214,0.2);
+  color: rgba(240,234,214,0.55);
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: var(--spacing-xs) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.backBtn:hover { border-color: var(--color-accent-gold); color: var(--color-accent-gold); }
+
+/* ════════════════════
+   RESPONSIVE
+   ════════════════════ */
+@media (max-width: 768px) {
+  .page { cursor: default; touch-action: pan-y; }
+  .lookHint { display: none; }
+
+  .infoPanel {
+    padding: var(--spacing-lg) var(--spacing-md);
+    padding-bottom: calc(var(--footer-height) + var(--spacing-lg));
+  }
+
+  .deptName { font-size: clamp(1.3rem, 5vw, 2rem); }
+  .hotspotBtn { left: 50%; bottom: 40%; }
+}
+
+@media (max-width: 480px) {
+  .panelActions { flex-direction: column; align-items: stretch; }
+  .assistantBtn, .whatsappBtn, .backBtn { justify-content: center; }
+  .hotspotBtn { left: 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspotRing, .hotspotRing2 { animation: none; }
+  .bg { transition: none !important; }
+}
