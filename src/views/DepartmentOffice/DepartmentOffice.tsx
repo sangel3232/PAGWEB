@@ -17,6 +17,15 @@ const DEPT_BG: Record<string, string> = {
   'derechos-autor':         '/images/derechos-autor-bg.jpg',
 }
 
+const DEPT_BG_MOBILE: Record<string, string> = {
+  'composicion-musical':    '/images/composition-musical-bg.jpg',
+  'produccion-musical':     '/images/production-musical-bg.jpg',
+  'proyectos-remixes':      '/images/proyect-remix-bg.jpg',
+  'marketing-lanzamientos': '/images/marquetin-lanzamiento-bg.jpg',
+  'relaciones-artisticas':  '',
+  'derechos-autor':         '/images/derechos-autor-mobile-bg.jpg',
+}
+
 export function DepartmentOffice() {
   const { slug = '' } = useParams<{ slug: string }>()
   const navigate = useNavigate()
@@ -67,8 +76,9 @@ export function DepartmentOffice() {
   if (!dept) return null
 
   const bgImage = DEPT_BG[slug] || ''
+  const mobileBgImage = DEPT_BG_MOBILE[slug] || bgImage
   const bgStyle = bgImage
-    ? { backgroundImage: `url(${bgImage})` }
+    ? undefined
     : { backgroundColor: dept.ambientColor }
 
   return (
@@ -90,6 +100,17 @@ export function DepartmentOffice() {
           y: { duration: 0.65, ease: 'easeOut' },
         }}
       >
+        {bgImage && (
+          <picture>
+            <source media="(max-width: 768px)" srcSet={mobileBgImage} />
+            <img
+              src={bgImage}
+              alt={`Oficina de ${dept.name}`}
+              className={styles.bgImg}
+              draggable={false}
+            />
+          </picture>
+        )}
         {/* Very subtle vignette only at edges — preserves image brightness */}
         <div className={styles.bgVignette} />
       </motion.div>

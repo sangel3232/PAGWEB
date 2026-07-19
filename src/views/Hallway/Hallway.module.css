@@ -33,6 +33,14 @@
   display: block;
 }
 
+@media (max-width: 768px) {
+  .bgImg {
+    object-fit: contain;
+    object-position: center top;
+    background: #080502;
+  }
+}
+
 /* Subtle vignette — keeps the image bright in the center */
 .bgVignette {
   position: absolute;
