@@ -28,6 +28,14 @@
   display: block;
 }
 
+@media (max-width: 768px) {
+  .bgImg {
+    object-fit: contain;
+    object-position: center top;
+    background: #050302;
+  }
+}
+
 .bgVignette {
   position: absolute;
   inset: 0;

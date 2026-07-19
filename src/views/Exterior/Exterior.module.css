@@ -28,6 +28,14 @@
   display: block;
 }
 
+@media (max-width: 768px) {
+  .bgImg {
+    object-fit: contain;
+    object-position: center top;
+    background: #040302;
+  }
+}
+
 /* Very light overlay — just enough to make text readable without killing the image */
 .overlay {
   position: absolute;
