@@ -18,8 +18,8 @@ export function Exterior() {
     : '/images/vistaexteriornoche-bg.jpg'
 
   const mobileBgSrc = day
-    ? '/images/vistaexteriordia-mobile-bg.jpg'
-    : '/images/vistaexteriornoche-mobile-bg.jpg'
+    ? '/images/vistaexteriordia-mobile-bg.jpeg'
+    : '/images/vistaexteriornoche-mobile-bg.jpeg'
 
   const bgAlt = day
     ? 'Vista exterior diurna de Zapata Composiciones'
