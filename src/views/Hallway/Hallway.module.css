@@ -84,6 +84,13 @@
   gap: 0;
 }
 
+@media (max-width: 768px) {
+  .hotspotWrapper {
+    left: var(--hotspot-left-mobile, inherit);
+    top: var(--hotspot-top-mobile, inherit);
+  }
+}
+
 /* The clickable dot */
 .hotspotBtn {
   position: relative;

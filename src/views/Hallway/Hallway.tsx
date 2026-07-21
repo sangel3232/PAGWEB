@@ -15,6 +15,8 @@ interface DoorConfig {
   doorImage: string          // photo of the door
   hotspotLeft: string        // hotspot position
   hotspotTop: string
+  hotspotLeftMobile?: string // mobile-specific hotspot position
+  hotspotTopMobile?: string
   side: 'left' | 'right' | 'center'
   route: string
   color?: string
@@ -25,40 +27,40 @@ const DOORS: DoorConfig[] = [
   {
     id: 1, slug: 'composicion-musical', label: 'Composición Musical', sublabel: 'Departamento 1',
     doorImage: '/images/puerta-composicionmusical-bg.jpg',
-    hotspotLeft: '6%', hotspotTop: '32%', side: 'left',
+    hotspotLeft: '6%', hotspotTop: '32%', hotspotLeftMobile: '14%', hotspotTopMobile: '34%', side: 'left',
     route: '/department/composicion-musical',
   },
   {
     id: 3, slug: 'produccion-musical', label: 'Producción Musical', sublabel: 'Departamento 3',
     doorImage: '/images/puerta-produccionmusical-bg.jpg',
-    hotspotLeft: '17%', hotspotTop: '43%', side: 'left',
+    hotspotLeft: '17%', hotspotTop: '43%', hotspotLeftMobile: '22%', hotspotTopMobile: '46%', side: 'left',
     route: '/department/produccion-musical',
   },
   {
     // Proyectos y Remixes replaces Relaciones Artísticas on left side
     id: 2, slug: 'proyectos-remixes', label: 'Proyectos y Remixes', sublabel: 'Departamento 2',
     doorImage: '/images/puerta-proyectosyremix-bg.jpg',
-    hotspotLeft: '27%', hotspotTop: '54%', side: 'left',
+    hotspotLeft: '27%', hotspotTop: '54%', hotspotLeftMobile: '30%', hotspotTopMobile: '57%', side: 'left',
     route: '/department/proyectos-remixes',
   },
   // RIGHT SIDE — 3 doors (Derechos, Marketing, CEO)
   {
     id: 6, slug: 'derechos-autor', label: 'Derechos de Autor', sublabel: 'Departamento 6',
     doorImage: '/images/puerta-derechosdeautor-bg.jpg',
-    hotspotLeft: '83%', hotspotTop: '34%', side: 'right',
+    hotspotLeft: '83%', hotspotTop: '34%', hotspotLeftMobile: '76%', hotspotTopMobile: '36%', side: 'right',
     route: '/department/derechos-autor',
   },
   {
     id: 4, slug: 'marketing-lanzamientos', label: 'Marketing y Lanzamientos', sublabel: 'Departamento 4',
     doorImage: '/images/puerta-marketingylanzamientos-bg.jpg',
-    hotspotLeft: '72%', hotspotTop: '44%', side: 'right',
+    hotspotLeft: '72%', hotspotTop: '44%', hotspotLeftMobile: '68%', hotspotTopMobile: '47%', side: 'right',
     route: '/department/marketing-lanzamientos',
   },
   {
     // CEO door is on the right side of the hallway (3rd door from front-right)
     slug: 'ceo', label: 'Oficina del CEO', sublabel: 'Emmanuel Segura Zapata',
     doorImage: '/images/puertas-oficinadelCEO-bg.jpg',
-    hotspotLeft: '62%', hotspotTop: '54%', side: 'right',
+    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '56%', hotspotTopMobile: '58%', side: 'right',
     route: '/ceo',
     color: '#E8C96A',
   },
@@ -278,7 +280,12 @@ export function Hallway() {
           <motion.button
             key={door.slug}
             className={styles.hotspotWrapper}
-            style={{ left: door.hotspotLeft, top: door.hotspotTop }}
+            style={{
+              left: door.hotspotLeft,
+              top: door.hotspotTop,
+              '--hotspot-left-mobile': door.hotspotLeftMobile ?? door.hotspotLeft,
+              '--hotspot-top-mobile': door.hotspotTopMobile ?? door.hotspotTop,
+            } as React.CSSProperties}
             onClick={() => handleDoorClick(door)}
             type="button"
             aria-label={`Ver puerta de ${door.label}`}
