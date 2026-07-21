@@ -281,8 +281,8 @@ export function Hallway() {
             key={door.slug}
             className={styles.hotspotWrapper}
             style={{
-              left: door.hotspotLeft,
-              top: door.hotspotTop,
+              '--hotspot-left': door.hotspotLeft,
+              '--hotspot-top': door.hotspotTop,
               '--hotspot-left-mobile': door.hotspotLeftMobile ?? door.hotspotLeft,
               '--hotspot-top-mobile': door.hotspotTopMobile ?? door.hotspotTop,
             } as React.CSSProperties}

@@ -77,6 +77,8 @@
 .hotspotWrapper {
   position: absolute;
   z-index: 6;
+  left: var(--hotspot-left, 0);
+  top: var(--hotspot-top, 0);
   transform: translate(-50%, -50%);  /* center on coordinates */
   display: flex;
   flex-direction: column;
@@ -86,8 +88,8 @@
 
 @media (max-width: 768px) {
   .hotspotWrapper {
-    left: var(--hotspot-left-mobile, inherit);
-    top: var(--hotspot-top-mobile, inherit);
+    left: var(--hotspot-left-mobile, var(--hotspot-left, 0));
+    top: var(--hotspot-top-mobile, var(--hotspot-top, 0));
   }
 }
 
