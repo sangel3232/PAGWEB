@@ -19,9 +19,9 @@ const DEPT_BG: Record<string, string> = {
 
 const DEPT_BG_MOBILE: Record<string, string> = {
   'composicion-musical':    '/images/composition-musical-mobile-bg.jpeg',
-  'produccion-musical':     '/images/production-musical-bg.jpg',
-  'proyectos-remixes':      '/images/proyect-remix-bg.jpg',
-  'marketing-lanzamientos': '/images/marquetin-lanzamiento-bg.jpg',
+  'produccion-musical':     '/images/production-mobile-bg.jpeg',
+  'proyectos-remixes':      '/images/proyectosyremix-mobile-bg.jpeg',
+  'marketing-lanzamientos': '/images/marquetin-lanzamiento-mobile-bg.jpeg',
   'relaciones-artisticas':  '',
   'derechos-autor':         '/images/derechos-autor-mobile-bg.jpg',
 }
