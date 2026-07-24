@@ -78,7 +78,7 @@ export function CEORoom() {
         transition={{ x: { duration: 0.65, ease: 'easeOut' }, y: { duration: 0.65, ease: 'easeOut' } }}
       >
         <picture>
-          <source media="(max-width: 768px)" srcSet="/images/oficinaCEO-mobile-bg.jpg" />
+          <source media="(max-width: 768px)" srcSet="/images/oficinaCEO-mobile-bg.jpeg" />
           <img src="/images/oficinaCEO-bg.jpg" alt="Oficina del CEO de Zapata Composiciones" className={styles.bgImg} draggable={false} />
         </picture>
         <div className={styles.bgVignette} />
