@@ -27,19 +27,19 @@ const DOORS: DoorConfig[] = [
   {
     id: 1, slug: 'composicion-musical', label: 'Composición Musical', sublabel: 'Departamento 1',
     doorImage: '/images/puerta-composicionmusical-bg.jpg',
-    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '10%', hotspotTopMobile: '21%', side: 'left',
+    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '7%', hotspotTopMobile: '21%', side: 'left',
     route: '/department/composicion-musical',
   },
   {
     id: 3, slug: 'produccion-musical', label: 'Producción Musical', sublabel: 'Departamento 3',
     doorImage: '/images/puerta-produccionmusical-bg.jpg',
-    hotspotLeft: '17%', hotspotTop: '33%', hotspotLeftMobile: '20%', hotspotTopMobile: '35%', side: 'left',
+    hotspotLeft: '17%', hotspotTop: '33%', hotspotLeftMobile: '16%', hotspotTopMobile: '35%', side: 'left',
     route: '/department/produccion-musical',
   },
   {
     id: 2, slug: 'proyectos-remixes', label: 'Proyectos y Remixes', sublabel: 'Departamento 2',
     doorImage: '/images/puerta-proyectosyremix-bg.jpg',
-    hotspotLeft: '27%', hotspotTop: '44%', hotspotLeftMobile: '34%', hotspotTopMobile: '50%', side: 'left',
+    hotspotLeft: '27%', hotspotTop: '44%', hotspotLeftMobile: '26%', hotspotTopMobile: '44%', side: 'left',
     route: '/department/proyectos-remixes',
   },
   // RIGHT SIDE — 3 doors
@@ -58,7 +58,7 @@ const DOORS: DoorConfig[] = [
   {
     slug: 'ceo', label: 'Oficina del CEO', sublabel: 'Emmanuel Segura Zapata',
     doorImage: '/images/puertas-oficinadelCEO-bg.jpg',
-    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '66%', hotspotTopMobile: '50%', side: 'right',
+    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '60%', hotspotTopMobile: '44%', side: 'right',
     route: '/ceo',
     color: '#E8C96A',
   },
