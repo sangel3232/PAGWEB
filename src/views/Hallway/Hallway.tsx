@@ -27,7 +27,7 @@ const DOORS: DoorConfig[] = [
   {
     id: 1, slug: 'composicion-musical', label: 'Composición Musical', sublabel: 'Departamento 1',
     doorImage: '/images/puerta-composicionmusical-bg.jpg',
-    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '8%', hotspotTopMobile: '19%', side: 'left',
+    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '7%', hotspotTopMobile: '19%', side: 'left',
     route: '/department/composicion-musical',
   },
   {
@@ -37,30 +37,28 @@ const DOORS: DoorConfig[] = [
     route: '/department/produccion-musical',
   },
   {
-    // Proyectos y Remixes replaces Relaciones Artísticas on left side
     id: 2, slug: 'proyectos-remixes', label: 'Proyectos y Remixes', sublabel: 'Departamento 2',
     doorImage: '/images/puerta-proyectosyremix-bg.jpg',
-    hotspotLeft: '27%', hotspotTop: '44%', hotspotLeftMobile: '26%', hotspotTopMobile: '46%', side: 'left',
+    hotspotLeft: '27%', hotspotTop: '44%', hotspotLeftMobile: '31%', hotspotTopMobile: '46%', side: 'left',
     route: '/department/proyectos-remixes',
   },
-  // RIGHT SIDE — 3 doors (Derechos, Marketing, CEO)
+  // RIGHT SIDE — 3 doors
   {
     id: 6, slug: 'derechos-autor', label: 'Derechos de Autor', sublabel: 'Departamento 6',
     doorImage: '/images/puerta-derechosdeautor-bg.jpg',
-    hotspotLeft: '83%', hotspotTop: '24%', hotspotLeftMobile: '70%', hotspotTopMobile: '46%', side: 'right',
+    hotspotLeft: '83%', hotspotTop: '34%', hotspotLeftMobile: '92%', hotspotTopMobile: '46%', side: 'right',
     route: '/department/derechos-autor',
   },
   {
     id: 4, slug: 'marketing-lanzamientos', label: 'Marketing y Lanzamientos', sublabel: 'Departamento 4',
     doorImage: '/images/puerta-marketingylanzamientos-bg.jpg',
-    hotspotLeft: '72%', hotspotTop: '34%', hotspotLeftMobile: '90%', hotspotTopMobile: '19%', side: 'right',
+    hotspotLeft: '72%', hotspotTop: '44%', hotspotLeftMobile: '81%', hotspotTopMobile: '19%', side: 'right',
     route: '/department/marketing-lanzamientos',
   },
   {
-    // CEO door is on the right side of the hallway (3rd door from front-right)
     slug: 'ceo', label: 'Oficina del CEO', sublabel: 'Emmanuel Segura Zapata',
     doorImage: '/images/puertas-oficinadelCEO-bg.jpg',
-    hotspotLeft: '62%', hotspotTop: '44%', hotspotLeftMobile: '79%', hotspotTopMobile: '33%', side: 'right',
+    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '69%', hotspotTopMobile: '33%', side: 'right',
     route: '/ceo',
     color: '#E8C96A',
   },
