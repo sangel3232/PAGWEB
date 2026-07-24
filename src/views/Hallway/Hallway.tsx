@@ -27,7 +27,7 @@ const DOORS: DoorConfig[] = [
   {
     id: 1, slug: 'composicion-musical', label: 'Composición Musical', sublabel: 'Departamento 1',
     doorImage: '/images/puerta-composicionmusical-bg.jpg',
-    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '7%', hotspotTopMobile: '21%', side: 'left',
+    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '7%', hotspotTopMobile: '23%', side: 'left',
     route: '/department/composicion-musical',
   },
   {
@@ -46,19 +46,19 @@ const DOORS: DoorConfig[] = [
   {
     id: 6, slug: 'derechos-autor', label: 'Derechos de Autor', sublabel: 'Departamento 6',
     doorImage: '/images/puerta-derechosdeautor-bg.jpg',
-    hotspotLeft: '83%', hotspotTop: '34%', hotspotLeftMobile: '90%', hotspotTopMobile: '21%', side: 'right',
+    hotspotLeft: '83%', hotspotTop: '34%', hotspotLeftMobile: '88%', hotspotTopMobile: '23%', side: 'right',
     route: '/department/derechos-autor',
   },
   {
     id: 4, slug: 'marketing-lanzamientos', label: 'Marketing y Lanzamientos', sublabel: 'Departamento 4',
     doorImage: '/images/puerta-marketingylanzamientos-bg.jpg',
-    hotspotLeft: '72%', hotspotTop: '44%', hotspotLeftMobile: '80%', hotspotTopMobile: '35%', side: 'right',
+    hotspotLeft: '72%', hotspotTop: '44%', hotspotLeftMobile: '79%', hotspotTopMobile: '35%', side: 'right',
     route: '/department/marketing-lanzamientos',
   },
   {
     slug: 'ceo', label: 'Oficina del CEO', sublabel: 'Emmanuel Segura Zapata',
     doorImage: '/images/puertas-oficinadelCEO-bg.jpg',
-    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '60%', hotspotTopMobile: '44%', side: 'right',
+    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '59%', hotspotTopMobile: '42%', side: 'right',
     route: '/ceo',
     color: '#E8C96A',
   },
