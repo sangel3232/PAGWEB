@@ -33,14 +33,14 @@ const DOORS: DoorConfig[] = [
   {
     id: 3, slug: 'produccion-musical', label: 'Producción Musical', sublabel: 'Departamento 3',
     doorImage: '/images/puerta-produccionmusical-bg.jpg',
-    hotspotLeft: '17%', hotspotTop: '43%', hotspotLeftMobile: '18%', hotspotTopMobile: '32%', side: 'left',
+    hotspotLeft: '17%', hotspotTop: '43%', hotspotLeftMobile: '18%', hotspotTopMobile: '30%', side: 'left',
     route: '/department/produccion-musical',
   },
   {
     // Proyectos y Remixes replaces Relaciones Artísticas on left side
     id: 2, slug: 'proyectos-remixes', label: 'Proyectos y Remixes', sublabel: 'Departamento 2',
     doorImage: '/images/puerta-proyectosyremix-bg.jpg',
-    hotspotLeft: '27%', hotspotTop: '54%', hotspotLeftMobile: '24%', hotspotTopMobile: '46%', side: 'left',
+    hotspotLeft: '27%', hotspotTop: '54%', hotspotLeftMobile: '28%', hotspotTopMobile: '42%', side: 'left',
     route: '/department/proyectos-remixes',
   },
   // RIGHT SIDE — 3 doors (Derechos, Marketing, CEO)
@@ -53,14 +53,14 @@ const DOORS: DoorConfig[] = [
   {
     id: 4, slug: 'marketing-lanzamientos', label: 'Marketing y Lanzamientos', sublabel: 'Departamento 4',
     doorImage: '/images/puerta-marketingylanzamientos-bg.jpg',
-    hotspotLeft: '72%', hotspotTop: '44%', hotspotLeftMobile: '70%', hotspotTopMobile: '34%', side: 'right',
+    hotspotLeft: '72%', hotspotTop: '44%', hotspotLeftMobile: '72%', hotspotTopMobile: '34%', side: 'right',
     route: '/department/marketing-lanzamientos',
   },
   {
     // CEO door is on the right side of the hallway (3rd door from front-right)
     slug: 'ceo', label: 'Oficina del CEO', sublabel: 'Emmanuel Segura Zapata',
     doorImage: '/images/puertas-oficinadelCEO-bg.jpg',
-    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '60%', hotspotTopMobile: '52%', side: 'right',
+    hotspotLeft: '62%', hotspotTop: '54%', hotspotLeftMobile: '62%', hotspotTopMobile: '48%', side: 'right',
     route: '/ceo',
     color: '#E8C96A',
   },
