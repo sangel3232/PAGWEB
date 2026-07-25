@@ -27,19 +27,19 @@ const DOORS: DoorConfig[] = [
   {
     id: 1, slug: 'composicion-musical', label: 'Composición Musical', sublabel: 'Departamento 1',
     doorImage: '/images/puerta-composicionmusical-bg.jpg',
-    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '6%', hotspotTopMobile: '32%', side: 'left',
+    hotspotLeft: '6%', hotspotTop: '22%', hotspotLeftMobile: '3%', hotspotTopMobile: '32%', side: 'left',
     route: '/department/composicion-musical',
   },
   {
     id: 3, slug: 'produccion-musical', label: 'Producción Musical', sublabel: 'Departamento 3',
     doorImage: '/images/puerta-produccionmusical-bg.jpg',
-    hotspotLeft: '17%', hotspotTop: '33%', hotspotLeftMobile: '16%', hotspotTopMobile: '36%', side: 'left',
+    hotspotLeft: '17%', hotspotTop: '33%', hotspotLeftMobile: '13%', hotspotTopMobile: '36%', side: 'left',
     route: '/department/produccion-musical',
   },
   {
     id: 2, slug: 'proyectos-remixes', label: 'Proyectos y Remixes', sublabel: 'Departamento 2',
     doorImage: '/images/puerta-proyectosyremix-bg.jpg',
-    hotspotLeft: '27%', hotspotTop: '44%', hotspotLeftMobile: '24%', hotspotTopMobile: '40%', side: 'left',
+    hotspotLeft: '27%', hotspotTop: '44%', hotspotLeftMobile: '21%', hotspotTopMobile: '40%', side: 'left',
     route: '/department/proyectos-remixes',
   },
   // RIGHT SIDE — 3 doors

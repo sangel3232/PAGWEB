@@ -484,15 +484,8 @@ export function CopyrightOffice() {
                   </div>
                 </motion.div>
               )}
-            </div>
 
-            {/* Back button */}
-            <div className={styles.panelFooter}>
-              <button className={styles.backBtn} onClick={() => navigate('/hallway')} type="button">
-                ← Volver al pasillo
-              </button>
-
-              {/* Developer credits — always visible at bottom */}
+              {/* Developer credits — at end of scrollable content */}
               <div className={styles.devCredits}>
                 <span className={styles.devCreditsBadge}>⚙️ Desarrollo Web</span>
                 <div className={styles.devCreditsInfo}>
@@ -503,6 +496,13 @@ export function CopyrightOffice() {
                   <span className={styles.devRole}>Ingeniero de Sistemas · Corhuila 2025</span>
                 </div>
               </div>
+            </div>
+
+            {/* Back button */}
+            <div className={styles.panelFooter}>
+              <button className={styles.backBtn} onClick={() => navigate('/hallway')} type="button">
+                ← Volver al pasillo
+              </button>
             </div>
           </motion.div>
         )}
