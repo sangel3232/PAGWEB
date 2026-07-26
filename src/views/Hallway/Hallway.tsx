@@ -46,7 +46,7 @@ const DOORS: DoorConfig[] = [
   {
     slug: 'ceo', label: 'Oficina del CEO', sublabel: 'Emmanuel Segura Zapata',
     doorImage: '/images/puertas-oficinadelCEO-bg.jpg',
-    hotspotLeft: '93%', hotspotTop: '22%', hotspotLeftMobile: '96%', hotspotTopMobile: '32%', side: 'right',
+    hotspotLeft: '93%', hotspotTop: '22%', hotspotLeftMobile: '97%', hotspotTopMobile: '32%', side: 'right',
     route: '/ceo',
     color: '#E8C96A',
   },
