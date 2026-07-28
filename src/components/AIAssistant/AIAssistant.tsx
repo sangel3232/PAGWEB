@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import type { DepartmentFlow, FlowData, ConversationStep } from '../../lib/conversationFlows'
 import type { ConversationMessage } from '../../lib/submissions'
-import { saveSubmissionLocal } from '../../lib/submissions'
+import { saveSubmission } from '../../lib/submissions'
 import styles from './AIAssistant.module.css'
 
 interface AIAssistantProps {
@@ -109,12 +109,22 @@ export function AIAssistant({ flow, onClose, onComplete }: AIAssistantProps) {
       setPhase('done')
       await addAssistantMessage(flow.farewell)
 
-      // Save locally (Firebase save would go here with real config)
-      saveSubmissionLocal({
+      const userText = selectedFile ? `📎 ${selectedFile.name}` : inputValue
+      const fullConversation = [
+        ...conversation,
+        { role: 'user' as const, text: userText, timestamp: new Date() },
+      ]
+
+      await saveSubmission({
         department: flow.name,
         departmentSlug: flow.slug,
-        ...newData,
-        conversation,
+        clientName: (newData.clientName as string) || '',
+        clientPhone: (newData.clientPhone as string) || '',
+        clientEmail: (newData.clientEmail as string) || '',
+        message: (newData.message as string) || (newData.projectDescription as string) || '',
+        workTitle: (newData.workTitle as string) || undefined,
+        lyrics: (newData.lyrics as string) || undefined,
+        conversation: fullConversation,
         status: 'Pendiente',
       })
 

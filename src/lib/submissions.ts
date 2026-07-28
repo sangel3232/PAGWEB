@@ -9,7 +9,6 @@ import {
   where,
   orderBy,
   Timestamp,
-  type DocumentData,
 } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { db, storage } from './firebase'
@@ -83,13 +82,4 @@ export async function addAdminReply(id: string, reply: string): Promise<void> {
   })
 }
 
-/** Mock save (used when Firebase is not configured) */
-export function saveSubmissionLocal(data: DocumentData): void {
-  const existing = JSON.parse(localStorage.getItem('zc_submissions') || '[]')
-  existing.push({ ...data, id: Date.now().toString(), createdAt: new Date().toISOString() })
-  localStorage.setItem('zc_submissions', JSON.stringify(existing))
-}
 
-export function getSubmissionsLocal(): DocumentData[] {
-  return JSON.parse(localStorage.getItem('zc_submissions') || '[]')
-}

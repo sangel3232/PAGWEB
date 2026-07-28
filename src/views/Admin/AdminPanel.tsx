@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getSubmissionsLocal, type Submission, type SubmissionStatus } from '../../lib/submissions'
+import { getSubmissions, updateStatus as updateSubmissionStatus, type Submission, type SubmissionStatus } from '../../lib/submissions'
 import { getCatalog, saveSong, deleteSong, toggleSongAvailability, type CatalogSong } from '../../data/catalog'
 import styles from './Admin.module.css'
 
@@ -174,8 +174,7 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
   const [adminView, setAdminView] = useState<AdminView>('solicitudes')
 
   useEffect(() => {
-    const raw = getSubmissionsLocal() as Submission[]
-    setSubmissions(raw.reverse())
+    getSubmissions().then(raw => setSubmissions(raw))
   }, [])
 
   const filtered = submissions.filter(s => {
@@ -186,10 +185,10 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
 
   const updateStatus = (id: string | undefined, status: SubmissionStatus) => {
     if (!id) return
+    updateSubmissionStatus(id, status)
     const updated = submissions.map(s => (s.id === id ? { ...s, status } : s))
     setSubmissions(updated)
     if (selected?.id === id) setSelected(prev => prev ? { ...prev, status } : prev)
-    localStorage.setItem('zc_submissions', JSON.stringify([...updated].reverse()))
   }
 
   const fmt = (d: unknown) => {
