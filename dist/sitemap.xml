@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/reception</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/hallway</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/ceo</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/about</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/second-floor</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/sala-espera</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/sala-reuniones</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/department/composicion-musical</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/department/proyectos-remixes</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/department/produccion-musical</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/department/marketing-lanzamientos</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/department/relaciones-artisticas</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://zapatacomposiciones.lat/department/derechos-autor</loc>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
