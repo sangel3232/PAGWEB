@@ -118,14 +118,42 @@ export function AIAssistant({ flow, onClose, onComplete }: AIAssistantProps) {
       await saveSubmission({
         department: flow.name,
         departmentSlug: flow.slug,
-        clientName: (newData.clientName as string) || '',
-        clientPhone: (newData.clientPhone as string) || '',
-        clientEmail: (newData.clientEmail as string) || '',
-        message: (newData.message as string) || (newData.projectDescription as string) || '',
-        workTitle: (newData.workTitle as string) || undefined,
-        lyrics: (newData.lyrics as string) || undefined,
-        conversation: fullConversation,
+
+        clientName: String(newData.clientName ?? ''),
+        clientPhone: String(newData.clientPhone ?? ''),
+        clientEmail: String(newData.clientEmail ?? ''),
+
+        message: String(
+          newData.message ??
+          newData.projectDescription ??
+          ''
+        ),
+
+        ...(newData.workTitle
+          ? { workTitle: String(newData.workTitle) }
+          : {}),
+
+        ...(newData.lyrics
+          ? { lyrics: String(newData.lyrics) }
+          : {}),
+
+        ...(newData.audioUrl
+          ? { audioUrl: String(newData.audioUrl) }
+          : {}),
+
+        ...(newData.fileUrls &&
+        Array.isArray(newData.fileUrls) &&
+        newData.fileUrls.length > 0
+          ? { fileUrls: newData.fileUrls as string[] }
+          : {}),
+
+        ...(newData.observations
+          ? { observations: String(newData.observations) }
+          : {}),
+
         status: 'Pendiente',
+
+        conversation: fullConversation,
       })
 
       onComplete?.(newData, conversation)

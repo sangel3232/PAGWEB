@@ -47,17 +47,30 @@ export async function uploadFile(file: File, path: string): Promise<string> {
 }
 
 /** Save a new submission to Firestore */
-export async function saveSubmission(data: Omit<Submission, 'id' | 'createdAt'>): Promise<string> {
-  const docRef = await addDoc(collection(db, 'submissions'), {
-    ...data,
-    createdAt: Timestamp.now(),
-  })
+export async function saveSubmission(
+  data: Omit<Submission, 'id' | 'createdAt'>
+): Promise<string> {
+
+  // Eliminar cualquier campo undefined antes de guardar
+  const cleanData = Object.fromEntries(
+    Object.entries({
+      ...data,
+      createdAt: Timestamp.now(),
+    }).filter(([, value]) => value !== undefined)
+  )
+
+  const docRef = await addDoc(
+    collection(db, 'submissions'),
+    cleanData
+  )
+
   return docRef.id
 }
 
 /** Get all submissions, optionally filtered by department */
 export async function getSubmissions(departmentSlug?: string): Promise<Submission[]> {
   let q = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'))
+
   if (departmentSlug) {
     q = query(
       collection(db, 'submissions'),
@@ -65,21 +78,30 @@ export async function getSubmissions(departmentSlug?: string): Promise<Submissio
       orderBy('createdAt', 'desc')
     )
   }
+
   const snapshot = await getDocs(q)
-  return snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Submission))
+
+  return snapshot.docs.map(d => ({
+    id: d.id,
+    ...d.data(),
+  } as Submission))
 }
 
 /** Update submission status */
-export async function updateStatus(id: string, status: SubmissionStatus): Promise<void> {
+export async function updateStatus(
+  id: string,
+  status: SubmissionStatus
+): Promise<void> {
   await updateDoc(doc(db, 'submissions', id), { status })
 }
 
 /** Add admin reply to a submission */
-export async function addAdminReply(id: string, reply: string): Promise<void> {
+export async function addAdminReply(
+  id: string,
+  reply: string
+): Promise<void> {
   await updateDoc(doc(db, 'submissions', id), {
     adminReply: reply,
     repliedAt: Timestamp.now(),
   })
 }
-
-
