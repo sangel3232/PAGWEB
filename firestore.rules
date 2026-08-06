@@ -1,0 +1,28 @@
+rules_version = '2';
+
+// Reglas de seguridad para el proyecto Zapata Composiciones
+//
+// La app cliente guarda y consulta solicitudes en la colección "submissions"
+// (escrituras desde las oficinas, lectura y cambios de estado desde el panel
+// del CEO). Como la app no usa Firebase Auth todavía, el acceso a esa
+// colección debe estar abierto para que el flujo funcione.
+//
+// ⚠️ RECOMENDADO: migrar el panel a Firebase Auth y restringir estas reglas
+//    a usuarios autenticados cuando se publique en producción.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Colección de solicitudes de clientes
+    match /submissions/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if true;
+    }
+
+    // Bloquear todo lo demás por defecto
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

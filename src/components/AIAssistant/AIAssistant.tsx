@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { Timestamp } from 'firebase/firestore'
 import type { DepartmentFlow, FlowData, ConversationStep } from '../../lib/conversationFlows'
 import type { ConversationMessage } from '../../lib/submissions'
 import { saveSubmission } from '../../lib/submissions'
@@ -61,7 +62,7 @@ export function AIAssistant({ flow, onClose, onComplete }: AIAssistantProps) {
         setIsTyping(false)
         setConversation(prev => [
           ...prev,
-          { role: 'assistant', text, timestamp: new Date() },
+          { role: 'assistant', text, timestamp: Timestamp.fromDate(new Date()) },
         ])
         resolve()
       }, delay)
@@ -97,7 +98,7 @@ export function AIAssistant({ flow, onClose, onComplete }: AIAssistantProps) {
     const userText = selectedFile ? `📎 ${selectedFile.name}` : inputValue
     setConversation(prev => [
       ...prev,
-      { role: 'user', text: userText, timestamp: new Date() },
+      { role: 'user', text: userText, timestamp: Timestamp.fromDate(new Date()) },
     ])
     setInputValue('')
     setSelectedFile(null)
@@ -110,53 +111,62 @@ export function AIAssistant({ flow, onClose, onComplete }: AIAssistantProps) {
       await addAssistantMessage(flow.farewell)
 
       const userText = selectedFile ? `📎 ${selectedFile.name}` : inputValue
-      const fullConversation = [
+      const fullConversation: ConversationMessage[] = [
         ...conversation,
-        { role: 'user' as const, text: userText, timestamp: new Date() },
+        {
+          role: 'user',
+          text: userText,
+          timestamp: Timestamp.fromDate(new Date()),
+        },
       ]
 
-      await saveSubmission({
-        department: flow.name,
-        departmentSlug: flow.slug,
+      try {
+        await saveSubmission({
+          department: flow.name,
+          departmentSlug: flow.slug,
 
-        clientName: String(newData.clientName ?? ''),
-        clientPhone: String(newData.clientPhone ?? ''),
-        clientEmail: String(newData.clientEmail ?? ''),
+          clientName: String(newData.clientName ?? ''),
+          clientPhone: String(newData.clientPhone ?? ''),
+          clientEmail: String(newData.clientEmail ?? ''),
 
-        message: String(
-          newData.message ??
-          newData.projectDescription ??
-          ''
-        ),
+          message: String(
+            newData.message ??
+            newData.projectDescription ??
+            ''
+          ),
 
-        ...(newData.workTitle
-          ? { workTitle: String(newData.workTitle) }
-          : {}),
+          ...(newData.workTitle
+            ? { workTitle: String(newData.workTitle) }
+            : {}),
 
-        ...(newData.lyrics
-          ? { lyrics: String(newData.lyrics) }
-          : {}),
+          ...(newData.lyrics
+            ? { lyrics: String(newData.lyrics) }
+            : {}),
 
-        ...(newData.audioUrl
-          ? { audioUrl: String(newData.audioUrl) }
-          : {}),
+          ...(newData.audioUrl
+            ? { audioUrl: String(newData.audioUrl) }
+            : {}),
 
-        ...(newData.fileUrls &&
-        Array.isArray(newData.fileUrls) &&
-        newData.fileUrls.length > 0
-          ? { fileUrls: newData.fileUrls as string[] }
-          : {}),
+          ...(newData.fileUrls &&
+          Array.isArray(newData.fileUrls) &&
+          newData.fileUrls.length > 0
+            ? { fileUrls: newData.fileUrls as string[] }
+            : {}),
 
-        ...(newData.observations
-          ? { observations: String(newData.observations) }
-          : {}),
+          ...(newData.observations
+            ? { observations: String(newData.observations) }
+            : {}),
 
-        status: 'Pendiente',
+          status: 'Pendiente',
 
-        conversation: fullConversation,
-      })
+          conversation: fullConversation,
+        })
 
-      onComplete?.(newData, conversation)
+        onComplete?.(newData, conversation)
+      } catch (e) {
+        console.error('Error al guardar la solicitud en Firestore:', e)
+        setError('Hubo un error al enviar tu solicitud. Por favor intenta de nuevo.')
+      }
     } else {
       setCurrentStepIdx(nextIdx)
       const nextMsg = interpolate(flow.steps[nextIdx].assistantMessage, newData)
@@ -427,6 +437,9 @@ export function AIAssistant({ flow, onClose, onComplete }: AIAssistantProps) {
 
             {phase === 'done' && (
               <div className={styles.doneActions}>
+                {error && (
+                  <p className={styles.errorMsg} role="alert">{error}</p>
+                )}
                 <button className={styles.doneBtn} onClick={onClose} type="button">
                   ✓ Cerrar
                 </button>

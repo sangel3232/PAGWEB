@@ -32,6 +32,8 @@ export interface FlowData {
   message?: string
   appointmentDate?: string
   observations?: string
+  audioUrl?: string
+  fileUrls?: string[]
 }
 
 export interface DepartmentFlow {

@@ -36,7 +36,7 @@ export interface Submission {
 export interface ConversationMessage {
   role: 'assistant' | 'user'
   text: string
-  timestamp: Date
+  timestamp: Timestamp | Date
 }
 
 /** Upload a file to Firebase Storage and return its download URL */
@@ -51,12 +51,21 @@ export async function saveSubmission(
   data: Omit<Submission, 'id' | 'createdAt'>
 ): Promise<string> {
 
+  // Convertir Date a Timestamp (Firestore acepta Date pero viaja mejor como Timestamp)
+  const raw = {
+    ...data,
+    conversation: data.conversation.map(msg => ({
+      ...msg,
+      timestamp: msg.timestamp instanceof Date
+        ? Timestamp.fromDate(msg.timestamp)
+        : msg.timestamp,
+    })),
+    createdAt: Timestamp.now(),
+  }
+
   // Eliminar cualquier campo undefined antes de guardar
   const cleanData = Object.fromEntries(
-    Object.entries({
-      ...data,
-      createdAt: Timestamp.now(),
-    }).filter(([, value]) => value !== undefined)
+    Object.entries(raw).filter(([, value]) => value !== undefined)
   )
 
   const docRef = await addDoc(
@@ -69,22 +78,38 @@ export async function saveSubmission(
 
 /** Get all submissions, optionally filtered by department */
 export async function getSubmissions(departmentSlug?: string): Promise<Submission[]> {
-  let q = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'))
+  try {
+    let q = query(collection(db, 'submissions'), orderBy('createdAt', 'desc'))
 
-  if (departmentSlug) {
-    q = query(
-      collection(db, 'submissions'),
-      where('departmentSlug', '==', departmentSlug),
-      orderBy('createdAt', 'desc')
-    )
+    if (departmentSlug) {
+      q = query(
+        collection(db, 'submissions'),
+        where('departmentSlug', '==', departmentSlug),
+        orderBy('createdAt', 'desc')
+      )
+    }
+
+    const snapshot = await getDocs(q)
+
+    return snapshot.docs.map(d => ({
+      id: d.id,
+      ...d.data(),
+    } as Submission))
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e)
+    if ((msg.includes('index') || msg.includes('requires')) && departmentSlug) {
+      console.warn('Índice compuesto faltante. Usando filtro manual.', e)
+      const snapshot = await getDocs(
+        query(collection(db, 'submissions'), orderBy('createdAt', 'desc'))
+      )
+      const all = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data(),
+      } as Submission))
+      return all.filter(s => s.departmentSlug === departmentSlug)
+    }
+    throw e
   }
-
-  const snapshot = await getDocs(q)
-
-  return snapshot.docs.map(d => ({
-    id: d.id,
-    ...d.data(),
-  } as Submission))
 }
 
 /** Update submission status */

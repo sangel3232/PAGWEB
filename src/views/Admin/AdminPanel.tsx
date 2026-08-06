@@ -172,9 +172,16 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [reply, setReply] = useState('')
   const [adminView, setAdminView] = useState<AdminView>('solicitudes')
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   useEffect(() => {
-    getSubmissions().then(raw => setSubmissions(raw))
+    setLoadError(null)
+    getSubmissions()
+      .then(raw => setSubmissions(raw))
+      .catch(e => {
+        console.error('Error al cargar solicitudes desde Firestore:', e)
+        setLoadError('No se pudieron cargar las solicitudes. Revisa que Firestore esté configurado correctamente.')
+      })
   }, [])
 
   const filtered = submissions.filter(s => {
@@ -281,7 +288,8 @@ export function AdminPanel({ onLogout }: AdminPanelProps) {
           <div className={styles.adminBody}>
             {/* List */}
             <div className={styles.submissionsList}>
-              {filtered.length === 0 && <p className={styles.emptyMsg}>No hay solicitudes que coincidan.</p>}
+              {loadError && <p className={styles.emptyMsg} style={{ color: '#ef4444' }}>{loadError}</p>}
+              {!loadError && filtered.length === 0 && <p className={styles.emptyMsg}>No hay solicitudes que coincidan.</p>}
               {filtered.map(sub => (
                 <button
                   key={sub.id}
